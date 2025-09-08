@@ -1,0 +1,858 @@
+[
+  {
+    template: Template {
+      inputPath: './input/posts/flask-app-nginx.md',
+      parsed: [Object],
+      extraOutputSubdirectory: '',
+      templateData: [TemplateData],
+      fileSlug: [TemplateFileSlug],
+      fileSlugStr: 'flask-app-nginx',
+      filePathStem: '/posts/flask-app-nginx',
+      linters: [],
+      transforms: [Object],
+      isVerbose: true,
+      isDryRun: false,
+      writeCount: 0,
+      outputFormat: 'fs',
+      behavior: [TemplateBehavior],
+      renderCount: 0,
+      _dataCache: [Promise],
+      inputContent: [Promise],
+      readingPromise: [Promise],
+      _frontMatterDataCache: [Promise],
+      _stats: [Promise],
+      _usePermalinkRoot: undefined
+    },
+    rawInput: '\n' +
+      '> This guide is written solely for me, I know there are a lot of tutorials online to do this, but writing this helps solidify my understanding for this exact process. The original guide I used is [here](https://www.digitalocean.com/community/tutorials/how-to-serve-flask-applications-with-gunicorn-and-nginx-on-ubuntu-22-04) and is a very helpful resource\n' +
+      '\n' +
+      'I went through the process of deploying a flask app to a VPS running an Nginx server recently and I wanted to document the process I took.\n' +
+      '\n' +
+      '**The task**: deploy a Flask app to a VPS running Debian 11 and an Nginx server. At the end of this we will be able to go to a subdomain, e.g [flask.jezl.xyz](https://flask-demo.jezl.xyz) and view a running Flask application.\n' +
+      '\n' +
+      '- Build an application locally with Python dependencies in a python virtual environment\n' +
+      '- Push the application to a linux server\n' +
+      '- Recreate the virtual environment and depencies on the server\n' +
+      '- Run the application on the server on a localhost port using Gunicorn\n' +
+      '- Create a server process using `systemd` to keep the application running persistently\n' +
+      '- Spin up a subdomain using Nginx to server the application\n' +
+      '\n' +
+      '## Building locally\n' +
+      '\n' +
+      "Let's create a new project locally:\n" +
+      '\n' +
+      '```console\n' +
+      'mkdir flask-demo && cd flask-demo\n' +
+      '```\n' +
+      '\n' +
+      'Create a new file called `app.py`, which will serve as the main entry point to our application.\n' +
+      '\n' +
+      'We will start with a barebones "Hello world" application in Flask.\n' +
+      '\n' +
+      '```console\n' +
+      'vim app.py\n' +
+      '```\n' +
+      '\n' +
+      '```python\n' +
+      'from flask import Flask\n' +
+      'app = Flask(__name__)\n' +
+      '\n' +
+      '@app.route("/")\n' +
+      'def greet():\n' +
+      '    return "<h1>Hello world!</h1>"\n' +
+      '\n' +
+      'if __name__ == "__main__":\n' +
+      '    app.run(host="0.0.0.0")\n' +
+      '```\n' +
+      '\n' +
+      '`host="0.0.0.0"` listens on any IP addresses.\n' +
+      '\n' +
+      "Now create a [virtual environment](https://docs.python.org/3/library/venv.html) to handle dependencies. Venv allows us to package our Python project with isolated dependencies that won't conflict with global dependencies.\n" +
+      '\n' +
+      '```console\n' +
+      'python3 -m venv venv\n' +
+      '```\n' +
+      '\n' +
+      'We have to source the virtual environment in order to activate it:\n' +
+      '\n' +
+      '```console\n' +
+      'source venv/bin/activate\n' +
+      '```\n' +
+      '\n' +
+      'You should now be in the virtual environment.\n' +
+      '\n' +
+      'We will install a few packages that will help us serve our app.\n' +
+      '\n' +
+      '```console\n' +
+      'pip install flask gunicorn\n' +
+      '```\n' +
+      '\n' +
+      "Flask is obviously the framework we need, while we don't need gunicorn right, installing it now ensures that we can include it in the dependencies we bundle with the project in production.\n" +
+      '\n' +
+      '```console\n' +
+      'python3 app.py\n' +
+      '```\n' +
+      '\n' +
+      'Run the app and go to [http://127.0.0.1:5000/](http://127.0.0.1:5000/) and you should see your app running.\n' +
+      '\n' +
+      '## Push the application to Linux server\n' +
+      '\n' +
+      "I'll be pushing this app to my server using `rsync`. I assume you can already SSH into a linux server running Nginx and that your html directory is at `/var/www/`.\n" +
+      '\n' +
+      'First close the server with `ctrl + c` and then run\n' +
+      '\n' +
+      '```console\n' +
+      'pip freeze > requirements.txt\n' +
+      '```\n' +
+      '\n' +
+      '`pip freeze` outputs a list of installed Python packages and their exact versions in the current environment.\n' +
+      '\n' +
+      'Outside of `flask-demo` run the following command:\n' +
+      '\n' +
+      '```console\n' +
+      'rsync -rvz --progress --exclude venv flask-demo user@your-remote-server:/var/www/\n' +
+      '```\n' +
+      '\n' +
+      'This will upload the project folder into `/var/www/` on the remote server. We skip the `venv` folder because we will build that on the remote server.\n' +
+      '\n' +
+      '## Setup the app on the remote server\n' +
+      '\n' +
+      'Now we have the application on our remote server, we will build and serve the app on our server.\n' +
+      '\n' +
+      'On the server cd into the project folder:\n' +
+      '\n' +
+      '```console\n' +
+      'cd /var/www/flask-demo\n' +
+      '```\n' +
+      '\n' +
+      'Build and source the virtual environment.\n' +
+      '\n' +
+      '```console\n' +
+      'python3 -m venv venv\n' +
+      'source venv/bin/activate\n' +
+      '```\n' +
+      '\n' +
+      'Your terminal should show something like `(venv) root@your-remote-server:/var/www/flask-demo#` now, meaning the virtual environment is active.\n' +
+      '\n' +
+      'Install dependencies from `requirements.txt`:\n' +
+      '\n' +
+      '```console\n' +
+      'pip install -r requirements.txt\n' +
+      '```\n' +
+      '\n' +
+      'Now we can open up port `5000` to serve our app from (this is just a temporary measure and we will close the port shortly). This is assuming you are already using [uncomplicated firewall](https://www.digitalocean.com/community/tutorials/how-to-set-up-a-firewall-with-ufw-on-ubuntu)\n' +
+      '\n' +
+      '```console\n' +
+      'ufw allow 5000\n' +
+      '```\n' +
+      '\n' +
+      'And start the app:\n' +
+      '\n' +
+      '```console\n' +
+      'python3 app.py\n' +
+      '```\n' +
+      '\n' +
+      'The app should be viewable on [your-server-ip:5000](your-server-ip:5000)\n' +
+      '\n' +
+      '## Configure Gunicorn\n' +
+      '\n' +
+      'Exit the flask server with `ctrl+c` and confirm the app is dead by going back to the URL.\n' +
+      '\n' +
+      "We want to Gunicorn to serve as our interface between our app and our users to allow for multithreading and other cool stuff. Let's test that out really quickly.\n" +
+      '\n' +
+      '```console\n' +
+      'gunicorn --bind 0.0.0.0:5000 app:app\n' +
+      '```\n' +
+      '\n' +
+      "Here we are starting Gunicorn and binding it to port `5000` so it's available to the outside world. `app:app` refers to the file that is out app entry point (`app.py`) and the `app` function itself within the file (basically our Flask app).\n" +
+      '\n' +
+      'Open back up the URL and you should still see the application running.\n' +
+      '\n' +
+      "Now we've confirmed it's working, let's close the Gunicorn process `ctrl -c` and exit the virtual environment with `deactivate`.\n" +
+      '\n' +
+      "Remove the firewall rule as we don't want it open anymore, and we should always keep ports closed for server security purposes.\n" +
+      '\n' +
+      '## Setup systemd process to serve our app\n' +
+      '\n' +
+      "This is the most complicated process of serving our app, and to be honest, when I first ran into this I was unfamiliar with systemd in linux, but it's been good to get exposure to it.\n" +
+      '\n' +
+      "Essentially, systemd is a service manager that can start up user processes, such as serving out app. This ensures that the serving of our app is managed by our server's service manager. If the server reboots, then systemd will take care of rebooting our application for us.\n" +
+      '\n' +
+      "Systemd processes are stored in `.service` files that live in `/etc/systemd/system`. Let's create a new service for our app:\n" +
+      '\n' +
+      '```console\n' +
+      'vim /etc/systemd/system/flaskdemo.service\n' +
+      '```\n' +
+      '\n' +
+      'Add the following to the file:\n' +
+      '\n' +
+      '```text\n' +
+      '[Unit]\n' +
+      'Description=Flask demo app service\n' +
+      'After=network.target\n' +
+      '\n' +
+      '[Service]\n' +
+      'User=root\n' +
+      'Group=www-data\n' +
+      'WorkingDirectory=/var/www/flask-demo\n' +
+      'Environment="PATH=/var/www/flask-demo/venv/bin"\n' +
+      'ExecStart=/var/www/flask-demo/venv/bin/gunicorn --workers 3 --bind unix:flaskdemo.sock -m 007 app:app\n' +
+      '\n' +
+      '[Install]\n' +
+      'WantedBy=multi-user.target\n' +
+      '```\n' +
+      '\n' +
+      "Now if we start the service and check it's status:\n" +
+      '\n' +
+      '```console\n' +
+      'systemctl start flaskdemo\n' +
+      'systemctl enable flaskdemo\n' +
+      'systemctl status flaskdemo\n' +
+      '```\n' +
+      '\n' +
+      'We should see the following output:\n' +
+      '\n' +
+      '```console\n' +
+      '● flaskdemo.service - Flask demo app service\n' +
+      '     Loaded: loaded (/etc/systemd/system/flaskdemo.service; enabled; vendor preset: enabled)\n' +
+      '     Active: active (running) since Wed 2025-03-26 16:03:52 UTC; 1min ago\n' +
+      '```\n' +
+      '\n' +
+      '## Serve the app to the world on your own domain\n' +
+      '\n' +
+      'Now we have systemd serving our project continuously, even on system reboot we can serve our app to the world using a our domain.\n' +
+      '\n' +
+      'Create a new nginx config file:\n' +
+      '\n' +
+      '```console\n' +
+      '$ vim /etc/nginx/sites-avaialable/flaskdemo\n' +
+      '```\n' +
+      '\n' +
+      'And add the following to the file:\n' +
+      '\n' +
+      '```text\n' +
+      'server {\n' +
+      '\tlisten 80;\n' +
+      '\tlisten [::]:80;\n' +
+      '\n' +
+      '\tserver_name flaskdemo.yourdomain.com www.flaskdemo.yourdomain.com;\n' +
+      '\n' +
+      '\tlocation / {\n' +
+      '\t\tinclude proxy_params;\n' +
+      '\t\tproxy_pass http://unix:/var/www/flask-demo/flaskdemo.sock;\n' +
+      '\t}\n' +
+      '}\n' +
+      '```\n' +
+      '\n' +
+      'Here we are listening for incoming requests on the standard TCP port, and then proxying the request on a unix domain socket (`unix:` is the directive for this). `/var/www/flask-demo/flaskdemo.sock` is in our project file and is th socket that the server is listening on.\n' +
+      '\n' +
+      'Check server config is ok and restart the server:\n' +
+      '\n' +
+      '```console\n' +
+      'nginx -t\n' +
+      'systemctl reload nginx\n' +
+      '```\n' +
+      '\n' +
+      'Go to http://flaskdemo.yourdomain.com and if everything went well then you should see your application!\n' +
+      '\n' +
+      'To serve the app over https run:\n' +
+      '\n' +
+      '```console\n' +
+      'certbot --nginx -d flaskdemo.yourdomain.com -d www.flaskdemo.yourdomain.com\n' +
+      '```\n' +
+      '\n' +
+      'To install the right SSL certificates.\n' +
+      '\n' +
+      "That's it 🎉. You'll notice that even if you restart your server now, systemd will reboot the application.\n" +
+      '\n' +
+      'I hope you found this informative and helpful.\n',
+    groupNumber: 0,
+    data: {
+      eleventy: [Object],
+      pkg: [Object],
+      title: 'How to deploy a Flask project to your linux server with Nginx',
+      layout: 'pages/post.njk',
+      tags: [Array],
+      page: [Object],
+      collections: [Object]
+    },
+    page: {
+      inputPath: './input/posts/flask-app-nginx.md',
+      fileSlug: 'flask-app-nginx',
+      filePathStem: '/posts/flask-app-nginx',
+      outputFileExtension: 'html',
+      templateSyntax: 'liquid,md',
+      date: 2025-09-08T18:29:05.149Z,
+      rawInput: '\n' +
+        '> This guide is written solely for me, I know there are a lot of tutorials online to do this, but writing this helps solidify my understanding for this exact process. The original guide I used is [here](https://www.digitalocean.com/community/tutorials/how-to-serve-flask-applications-with-gunicorn-and-nginx-on-ubuntu-22-04) and is a very helpful resource\n' +
+        '\n' +
+        'I went through the process of deploying a flask app to a VPS running an Nginx server recently and I wanted to document the process I took.\n' +
+        '\n' +
+        '**The task**: deploy a Flask app to a VPS running Debian 11 and an Nginx server. At the end of this we will be able to go to a subdomain, e.g [flask.jezl.xyz](https://flask-demo.jezl.xyz) and view a running Flask application.\n' +
+        '\n' +
+        '- Build an application locally with Python dependencies in a python virtual environment\n' +
+        '- Push the application to a linux server\n' +
+        '- Recreate the virtual environment and depencies on the server\n' +
+        '- Run the application on the server on a localhost port using Gunicorn\n' +
+        '- Create a server process using `systemd` to keep the application running persistently\n' +
+        '- Spin up a subdomain using Nginx to server the application\n' +
+        '\n' +
+        '## Building locally\n' +
+        '\n' +
+        "Let's create a new project locally:\n" +
+        '\n' +
+        '```console\n' +
+        'mkdir flask-demo && cd flask-demo\n' +
+        '```\n' +
+        '\n' +
+        'Create a new file called `app.py`, which will serve as the main entry point to our application.\n' +
+        '\n' +
+        'We will start with a barebones "Hello world" application in Flask.\n' +
+        '\n' +
+        '```console\n' +
+        'vim app.py\n' +
+        '```\n' +
+        '\n' +
+        '```python\n' +
+        'from flask import Flask\n' +
+        'app = Flask(__name__)\n' +
+        '\n' +
+        '@app.route("/")\n' +
+        'def greet():\n' +
+        '    return "<h1>Hello world!</h1>"\n' +
+        '\n' +
+        'if __name__ == "__main__":\n' +
+        '    app.run(host="0.0.0.0")\n' +
+        '```\n' +
+        '\n' +
+        '`host="0.0.0.0"` listens on any IP addresses.\n' +
+        '\n' +
+        "Now create a [virtual environment](https://docs.python.org/3/library/venv.html) to handle dependencies. Venv allows us to package our Python project with isolated dependencies that won't conflict with global dependencies.\n" +
+        '\n' +
+        '```console\n' +
+        'python3 -m venv venv\n' +
+        '```\n' +
+        '\n' +
+        'We have to source the virtual environment in order to activate it:\n' +
+        '\n' +
+        '```console\n' +
+        'source venv/bin/activate\n' +
+        '```\n' +
+        '\n' +
+        'You should now be in the virtual environment.\n' +
+        '\n' +
+        'We will install a few packages that will help us serve our app.\n' +
+        '\n' +
+        '```console\n' +
+        'pip install flask gunicorn\n' +
+        '```\n' +
+        '\n' +
+        "Flask is obviously the framework we need, while we don't need gunicorn right, installing it now ensures that we can include it in the dependencies we bundle with the project in production.\n" +
+        '\n' +
+        '```console\n' +
+        'python3 app.py\n' +
+        '```\n' +
+        '\n' +
+        'Run the app and go to [http://127.0.0.1:5000/](http://127.0.0.1:5000/) and you should see your app running.\n' +
+        '\n' +
+        '## Push the application to Linux server\n' +
+        '\n' +
+        "I'll be pushing this app to my server using `rsync`. I assume you can already SSH into a linux server running Nginx and that your html directory is at `/var/www/`.\n" +
+        '\n' +
+        'First close the server with `ctrl + c` and then run\n' +
+        '\n' +
+        '```console\n' +
+        'pip freeze > requirements.txt\n' +
+        '```\n' +
+        '\n' +
+        '`pip freeze` outputs a list of installed Python packages and their exact versions in the current environment.\n' +
+        '\n' +
+        'Outside of `flask-demo` run the following command:\n' +
+        '\n' +
+        '```console\n' +
+        'rsync -rvz --progress --exclude venv flask-demo user@your-remote-server:/var/www/\n' +
+        '```\n' +
+        '\n' +
+        'This will upload the project folder into `/var/www/` on the remote server. We skip the `venv` folder because we will build that on the remote server.\n' +
+        '\n' +
+        '## Setup the app on the remote server\n' +
+        '\n' +
+        'Now we have the application on our remote server, we will build and serve the app on our server.\n' +
+        '\n' +
+        'On the server cd into the project folder:\n' +
+        '\n' +
+        '```console\n' +
+        'cd /var/www/flask-demo\n' +
+        '```\n' +
+        '\n' +
+        'Build and source the virtual environment.\n' +
+        '\n' +
+        '```console\n' +
+        'python3 -m venv venv\n' +
+        'source venv/bin/activate\n' +
+        '```\n' +
+        '\n' +
+        'Your terminal should show something like `(venv) root@your-remote-server:/var/www/flask-demo#` now, meaning the virtual environment is active.\n' +
+        '\n' +
+        'Install dependencies from `requirements.txt`:\n' +
+        '\n' +
+        '```console\n' +
+        'pip install -r requirements.txt\n' +
+        '```\n' +
+        '\n' +
+        'Now we can open up port `5000` to serve our app from (this is just a temporary measure and we will close the port shortly). This is assuming you are already using [uncomplicated firewall](https://www.digitalocean.com/community/tutorials/how-to-set-up-a-firewall-with-ufw-on-ubuntu)\n' +
+        '\n' +
+        '```console\n' +
+        'ufw allow 5000\n' +
+        '```\n' +
+        '\n' +
+        'And start the app:\n' +
+        '\n' +
+        '```console\n' +
+        'python3 app.py\n' +
+        '```\n' +
+        '\n' +
+        'The app should be viewable on [your-server-ip:5000](your-server-ip:5000)\n' +
+        '\n' +
+        '## Configure Gunicorn\n' +
+        '\n' +
+        'Exit the flask server with `ctrl+c` and confirm the app is dead by going back to the URL.\n' +
+        '\n' +
+        "We want to Gunicorn to serve as our interface between our app and our users to allow for multithreading and other cool stuff. Let's test that out really quickly.\n" +
+        '\n' +
+        '```console\n' +
+        'gunicorn --bind 0.0.0.0:5000 app:app\n' +
+        '```\n' +
+        '\n' +
+        "Here we are starting Gunicorn and binding it to port `5000` so it's available to the outside world. `app:app` refers to the file that is out app entry point (`app.py`) and the `app` function itself within the file (basically our Flask app).\n" +
+        '\n' +
+        'Open back up the URL and you should still see the application running.\n' +
+        '\n' +
+        "Now we've confirmed it's working, let's close the Gunicorn process `ctrl -c` and exit the virtual environment with `deactivate`.\n" +
+        '\n' +
+        "Remove the firewall rule as we don't want it open anymore, and we should always keep ports closed for server security purposes.\n" +
+        '\n' +
+        '## Setup systemd process to serve our app\n' +
+        '\n' +
+        "This is the most complicated process of serving our app, and to be honest, when I first ran into this I was unfamiliar with systemd in linux, but it's been good to get exposure to it.\n" +
+        '\n' +
+        "Essentially, systemd is a service manager that can start up user processes, such as serving out app. This ensures that the serving of our app is managed by our server's service manager. If the server reboots, then systemd will take care of rebooting our application for us.\n" +
+        '\n' +
+        "Systemd processes are stored in `.service` files that live in `/etc/systemd/system`. Let's create a new service for our app:\n" +
+        '\n' +
+        '```console\n' +
+        'vim /etc/systemd/system/flaskdemo.service\n' +
+        '```\n' +
+        '\n' +
+        'Add the following to the file:\n' +
+        '\n' +
+        '```text\n' +
+        '[Unit]\n' +
+        'Description=Flask demo app service\n' +
+        'After=network.target\n' +
+        '\n' +
+        '[Service]\n' +
+        'User=root\n' +
+        'Group=www-data\n' +
+        'WorkingDirectory=/var/www/flask-demo\n' +
+        'Environment="PATH=/var/www/flask-demo/venv/bin"\n' +
+        'ExecStart=/var/www/flask-demo/venv/bin/gunicorn --workers 3 --bind unix:flaskdemo.sock -m 007 app:app\n' +
+        '\n' +
+        '[Install]\n' +
+        'WantedBy=multi-user.target\n' +
+        '```\n' +
+        '\n' +
+        "Now if we start the service and check it's status:\n" +
+        '\n' +
+        '```console\n' +
+        'systemctl start flaskdemo\n' +
+        'systemctl enable flaskdemo\n' +
+        'systemctl status flaskdemo\n' +
+        '```\n' +
+        '\n' +
+        'We should see the following output:\n' +
+        '\n' +
+        '```console\n' +
+        '● flaskdemo.service - Flask demo app service\n' +
+        '     Loaded: loaded (/etc/systemd/system/flaskdemo.service; enabled; vendor preset: enabled)\n' +
+        '     Active: active (running) since Wed 2025-03-26 16:03:52 UTC; 1min ago\n' +
+        '```\n' +
+        '\n' +
+        '## Serve the app to the world on your own domain\n' +
+        '\n' +
+        'Now we have systemd serving our project continuously, even on system reboot we can serve our app to the world using a our domain.\n' +
+        '\n' +
+        'Create a new nginx config file:\n' +
+        '\n' +
+        '```console\n' +
+        '$ vim /etc/nginx/sites-avaialable/flaskdemo\n' +
+        '```\n' +
+        '\n' +
+        'And add the following to the file:\n' +
+        '\n' +
+        '```text\n' +
+        'server {\n' +
+        '\tlisten 80;\n' +
+        '\tlisten [::]:80;\n' +
+        '\n' +
+        '\tserver_name flaskdemo.yourdomain.com www.flaskdemo.yourdomain.com;\n' +
+        '\n' +
+        '\tlocation / {\n' +
+        '\t\tinclude proxy_params;\n' +
+        '\t\tproxy_pass http://unix:/var/www/flask-demo/flaskdemo.sock;\n' +
+        '\t}\n' +
+        '}\n' +
+        '```\n' +
+        '\n' +
+        'Here we are listening for incoming requests on the standard TCP port, and then proxying the request on a unix domain socket (`unix:` is the directive for this). `/var/www/flask-demo/flaskdemo.sock` is in our project file and is th socket that the server is listening on.\n' +
+        '\n' +
+        'Check server config is ok and restart the server:\n' +
+        '\n' +
+        '```console\n' +
+        'nginx -t\n' +
+        'systemctl reload nginx\n' +
+        '```\n' +
+        '\n' +
+        'Go to http://flaskdemo.yourdomain.com and if everything went well then you should see your application!\n' +
+        '\n' +
+        'To serve the app over https run:\n' +
+        '\n' +
+        '```console\n' +
+        'certbot --nginx -d flaskdemo.yourdomain.com -d www.flaskdemo.yourdomain.com\n' +
+        '```\n' +
+        '\n' +
+        'To install the right SSL certificates.\n' +
+        '\n' +
+        "That's it 🎉. You'll notice that even if you restart your server now, systemd will reboot the application.\n" +
+        '\n' +
+        'I hope you found this informative and helpful.\n',
+      url: '/posts/flask-app-nginx/',
+      outputPath: './_site/posts/flask-app-nginx/index.html'
+    },
+    inputPath: './input/posts/flask-app-nginx.md',
+    fileSlug: 'flask-app-nginx',
+    filePathStem: '/posts/flask-app-nginx',
+    date: 2025-09-08T18:29:05.149Z,
+    outputPath: './_site/posts/flask-app-nginx/index.html',
+    url: '/posts/flask-app-nginx/',
+    templateContent: [Getter/Setter],
+    content: [Getter/Setter]
+  },
+  {
+    template: Template {
+      inputPath: './input/posts/otp-command-line.md',
+      parsed: [Object],
+      extraOutputSubdirectory: '',
+      templateData: [TemplateData],
+      fileSlug: [TemplateFileSlug],
+      fileSlugStr: 'otp-command-line',
+      filePathStem: '/posts/otp-command-line',
+      linters: [],
+      transforms: [Object],
+      isVerbose: true,
+      isDryRun: false,
+      writeCount: 0,
+      outputFormat: 'fs',
+      behavior: [TemplateBehavior],
+      renderCount: 0,
+      _dataCache: [Promise],
+      inputContent: [Promise],
+      readingPromise: [Promise],
+      _frontMatterDataCache: [Promise],
+      _stats: [Promise],
+      _usePermalinkRoot: undefined
+    },
+    rawInput: '\n' +
+      "I'm in the middle of an experiment to ditch my smartphone for a month.\n" +
+      '\n' +
+      "Anyway, i've found new resolve and i'm just using my Nokia dumbphone now, but a problem occurred today at work - how do I manage all my OTP needs? Usually I get a text or open up the Google Authenticator app to get access to systems.\n" +
+      '\n' +
+      'Enter `pass` and `pass otp`.\n' +
+      '\n' +
+      '## Command line password managment & OTP\n' +
+      '\n' +
+      "Turns out you can access all your OTP codes from the command line pretty easily if you're using a unix system.\n" +
+      '\n' +
+      'Fire up your terminal, first you need to install `pass`, which is the [standard local password manager](https://www.passwordstore.org/) for unix systems. We need pass in order to use pass otp, which is a pass plugin.\n' +
+      '\n' +
+      'For MacOS you can install using brew:\n' +
+      '\n' +
+      '```console\n' +
+      '$ brew install pass\n' +
+      '```\n' +
+      '\n' +
+      'Now you need to initialise pass, which uses one of your gpg keys to encrypt the password file on your local machine:\n' +
+      '\n' +
+      "If you don't know how to setup a gpg key, follow [this guide](https://dev.to/zemse/setup-gpg-on-macos-2iib), but it's basically:\n" +
+      '\n' +
+      '```console\n' +
+      '$ brew install gpg\n' +
+      '```\n' +
+      '\n' +
+      '```console\n' +
+      '$ gpg --gen-key\n' +
+      '```\n' +
+      '\n' +
+      'Then init pass:\n' +
+      '\n' +
+      '```console\n' +
+      '$ pass init "GPG key ID"\n' +
+      '```\n' +
+      '\n' +
+      "Now we need to install `pass otp`, [which is an extension](https://formulae.brew.sh/formula/pass-otp) of `pass` and will allow us to get one time passwords for all our logins. You can't have one without the other.\n" +
+      '\n' +
+      '```console\n' +
+      '$ brew install pass-otp\n' +
+      '```\n' +
+      '\n' +
+      'We also need to install `zbar` (more on that in a moment):\n' +
+      '\n' +
+      '```console\n' +
+      '$ brew install zbar\n' +
+      '```\n' +
+      '\n' +
+      "Once that's done, we're good to go.\n" +
+      '\n' +
+      '## Setting up your first OTP\n' +
+      '\n' +
+      'When you setup OTP for a website, you get given the QR code for your authenticator app to scan. To setup OTP from the command line we take the following steps:\n' +
+      '\n' +
+      '- Download the QR image\n' +
+      '- Use `zbarimg` to decode the URI of the QR code\n' +
+      '- Pass the URI to `pass otp`\n' +
+      '- OTP generation can now be done locally\n' +
+      '\n' +
+      "First, grab the QR code provided by whatever system you're logging in to, download it and `cd` into the directory with that image.\n" +
+      '\n' +
+      'Decode the QR code URI:\n' +
+      '\n' +
+      '```console\n' +
+      '$ zbarimg download.png\n' +
+      '```\n' +
+      '\n' +
+      'This will output a URI that looks something like this (using Soundclound QR code as an example)\n' +
+      '\n' +
+      '```\n' +
+      'QR-Code:otpauth://totp/SoundCloud?secret={RANDOMALPHANUMERICSTRING}\n' +
+      '```\n' +
+      '\n' +
+      'We need to rip everything after `QR-Code:`, so: `otpauth://totp/SoundCloud?secret={RANDOMALPHANUMERICSTRING}`.\n' +
+      '\n' +
+      'We now need to run our OTP command:\n' +
+      '\n' +
+      '```console\n' +
+      '$ pass otp add soundcloud\n' +
+      '```\n' +
+      '\n' +
+      '`soundcloud` here is the name of our OTP entry for this service.\n' +
+      '\n' +
+      'We will be prompted to add our `otpath:// URI`, add the URI from before.\n' +
+      '\n' +
+      'Done!\n' +
+      '\n' +
+      'Now anytime we are prompted by Soundcloud to add our OTP we simply run:\n' +
+      '\n' +
+      '```console\n' +
+      '$ pass otp soundcloud\n' +
+      '```\n' +
+      '\n' +
+      "We'll get back a six digit OTP.\n" +
+      '\n' +
+      "You could also automate this process with a shell script, i've created one over [here](https://github.com/JeremyJamesL/shell-scripts/blob/main/2fa-creater.sh).\n" +
+      '\n' +
+      'No smartphone, no problem. This actually has a benefit of not pulling you out of your workflow and being distracted while working / doing whatever.\n',
+    groupNumber: 0,
+    data: {
+      eleventy: [Object],
+      pkg: [Object],
+      title: 'OTP from the command line (AKA ditch your smartphone)',
+      tags: [Array],
+      page: [Object],
+      collections: [Object]
+    },
+    page: {
+      inputPath: './input/posts/otp-command-line.md',
+      fileSlug: 'otp-command-line',
+      filePathStem: '/posts/otp-command-line',
+      outputFileExtension: 'html',
+      templateSyntax: 'liquid,md',
+      date: 2025-09-08T18:29:24.562Z,
+      rawInput: '\n' +
+        "I'm in the middle of an experiment to ditch my smartphone for a month.\n" +
+        '\n' +
+        "Anyway, i've found new resolve and i'm just using my Nokia dumbphone now, but a problem occurred today at work - how do I manage all my OTP needs? Usually I get a text or open up the Google Authenticator app to get access to systems.\n" +
+        '\n' +
+        'Enter `pass` and `pass otp`.\n' +
+        '\n' +
+        '## Command line password managment & OTP\n' +
+        '\n' +
+        "Turns out you can access all your OTP codes from the command line pretty easily if you're using a unix system.\n" +
+        '\n' +
+        'Fire up your terminal, first you need to install `pass`, which is the [standard local password manager](https://www.passwordstore.org/) for unix systems. We need pass in order to use pass otp, which is a pass plugin.\n' +
+        '\n' +
+        'For MacOS you can install using brew:\n' +
+        '\n' +
+        '```console\n' +
+        '$ brew install pass\n' +
+        '```\n' +
+        '\n' +
+        'Now you need to initialise pass, which uses one of your gpg keys to encrypt the password file on your local machine:\n' +
+        '\n' +
+        "If you don't know how to setup a gpg key, follow [this guide](https://dev.to/zemse/setup-gpg-on-macos-2iib), but it's basically:\n" +
+        '\n' +
+        '```console\n' +
+        '$ brew install gpg\n' +
+        '```\n' +
+        '\n' +
+        '```console\n' +
+        '$ gpg --gen-key\n' +
+        '```\n' +
+        '\n' +
+        'Then init pass:\n' +
+        '\n' +
+        '```console\n' +
+        '$ pass init "GPG key ID"\n' +
+        '```\n' +
+        '\n' +
+        "Now we need to install `pass otp`, [which is an extension](https://formulae.brew.sh/formula/pass-otp) of `pass` and will allow us to get one time passwords for all our logins. You can't have one without the other.\n" +
+        '\n' +
+        '```console\n' +
+        '$ brew install pass-otp\n' +
+        '```\n' +
+        '\n' +
+        'We also need to install `zbar` (more on that in a moment):\n' +
+        '\n' +
+        '```console\n' +
+        '$ brew install zbar\n' +
+        '```\n' +
+        '\n' +
+        "Once that's done, we're good to go.\n" +
+        '\n' +
+        '## Setting up your first OTP\n' +
+        '\n' +
+        'When you setup OTP for a website, you get given the QR code for your authenticator app to scan. To setup OTP from the command line we take the following steps:\n' +
+        '\n' +
+        '- Download the QR image\n' +
+        '- Use `zbarimg` to decode the URI of the QR code\n' +
+        '- Pass the URI to `pass otp`\n' +
+        '- OTP generation can now be done locally\n' +
+        '\n' +
+        "First, grab the QR code provided by whatever system you're logging in to, download it and `cd` into the directory with that image.\n" +
+        '\n' +
+        'Decode the QR code URI:\n' +
+        '\n' +
+        '```console\n' +
+        '$ zbarimg download.png\n' +
+        '```\n' +
+        '\n' +
+        'This will output a URI that looks something like this (using Soundclound QR code as an example)\n' +
+        '\n' +
+        '```\n' +
+        'QR-Code:otpauth://totp/SoundCloud?secret={RANDOMALPHANUMERICSTRING}\n' +
+        '```\n' +
+        '\n' +
+        'We need to rip everything after `QR-Code:`, so: `otpauth://totp/SoundCloud?secret={RANDOMALPHANUMERICSTRING}`.\n' +
+        '\n' +
+        'We now need to run our OTP command:\n' +
+        '\n' +
+        '```console\n' +
+        '$ pass otp add soundcloud\n' +
+        '```\n' +
+        '\n' +
+        '`soundcloud` here is the name of our OTP entry for this service.\n' +
+        '\n' +
+        'We will be prompted to add our `otpath:// URI`, add the URI from before.\n' +
+        '\n' +
+        'Done!\n' +
+        '\n' +
+        'Now anytime we are prompted by Soundcloud to add our OTP we simply run:\n' +
+        '\n' +
+        '```console\n' +
+        '$ pass otp soundcloud\n' +
+        '```\n' +
+        '\n' +
+        "We'll get back a six digit OTP.\n" +
+        '\n' +
+        "You could also automate this process with a shell script, i've created one over [here](https://github.com/JeremyJamesL/shell-scripts/blob/main/2fa-creater.sh).\n" +
+        '\n' +
+        'No smartphone, no problem. This actually has a benefit of not pulling you out of your workflow and being distracted while working / doing whatever.\n',
+      url: '/posts/otp-command-line/',
+      outputPath: './_site/posts/otp-command-line/index.html'
+    },
+    inputPath: './input/posts/otp-command-line.md',
+    fileSlug: 'otp-command-line',
+    filePathStem: '/posts/otp-command-line',
+    date: 2025-09-08T18:29:24.562Z,
+    outputPath: './_site/posts/otp-command-line/index.html',
+    url: '/posts/otp-command-line/',
+    templateContent: [Getter/Setter],
+    content: [Getter/Setter]
+  },
+  {
+    template: Template {
+      inputPath: './input/posts/the-great-degoogling.md',
+      parsed: [Object],
+      extraOutputSubdirectory: '',
+      templateData: [TemplateData],
+      fileSlug: [TemplateFileSlug],
+      fileSlugStr: 'the-great-degoogling',
+      filePathStem: '/posts/the-great-degoogling',
+      linters: [],
+      transforms: [Object],
+      isVerbose: true,
+      isDryRun: false,
+      writeCount: 0,
+      outputFormat: 'fs',
+      behavior: [TemplateBehavior],
+      renderCount: 0,
+      _dataCache: [Promise],
+      inputContent: [Promise],
+      readingPromise: [Promise],
+      _frontMatterDataCache: [Promise],
+      _stats: [Promise],
+      _usePermalinkRoot: undefined
+    },
+    rawInput: '\n' +
+      "Here's how I went about removing Google from my life:\n" +
+      '\n' +
+      '- Google Drive\n' +
+      '- Smartphone\n' +
+      '- Calendar ->\n' +
+      '- Gmail -> https://purelymail.com/ - 10 bucks for a year, which comes to less than buck a month\n' +
+      '- Google Photos\n',
+    groupNumber: 0,
+    data: {
+      eleventy: [Object],
+      pkg: [Object],
+      title: 'The great degoogling',
+      page: [Object],
+      collections: [Object]
+    },
+    page: {
+      inputPath: './input/posts/the-great-degoogling.md',
+      fileSlug: 'the-great-degoogling',
+      filePathStem: '/posts/the-great-degoogling',
+      outputFileExtension: 'html',
+      templateSyntax: 'liquid,md',
+      date: 2025-09-08T18:31:58.953Z,
+      rawInput: '\n' +
+        "Here's how I went about removing Google from my life:\n" +
+        '\n' +
+        '- Google Drive\n' +
+        '- Smartphone\n' +
+        '- Calendar ->\n' +
+        '- Gmail -> https://purelymail.com/ - 10 bucks for a year, which comes to less than buck a month\n' +
+        '- Google Photos\n',
+      url: '/posts/the-great-degoogling/',
+      outputPath: './_site/posts/the-great-degoogling/index.html'
+    },
+    inputPath: './input/posts/the-great-degoogling.md',
+    fileSlug: 'the-great-degoogling',
+    filePathStem: '/posts/the-great-degoogling',
+    date: 2025-09-08T18:31:58.953Z,
+    outputPath: './_site/posts/the-great-degoogling/index.html',
+    url: '/posts/the-great-degoogling/',
+    templateContent: [Getter/Setter],
+    content: [Getter/Setter]
+  }
+]

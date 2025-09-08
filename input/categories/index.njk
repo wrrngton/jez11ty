@@ -1,0 +1,39 @@
+---
+title: post tags
+description: post tags
+layout: base.njk
+---
+
+{% set catArr = [] %}
+
+{% for post in collections.posts %}
+
+    {% if post.data.category not in catArr %}
+
+      {% set catArr = (catArr.push(post.data.category), catArr) %}
+
+    {% endif %}
+
+{% endfor %}
+
+{{ catArr }}
+
+{% for cat in catArr %}
+
+  <h2>{{ cat }}</h2>
+
+  <ul class="flex">
+
+  {% for post in collections[cat] %}
+
+  <li>
+    <a href="{{ post.url }}" />
+      {{ post.data.title }}
+    </a>
+  </li>
+
+  {% endfor %}
+
+  </ul>
+
+{% endfor %}
