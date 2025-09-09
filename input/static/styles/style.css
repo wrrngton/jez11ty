@@ -205,6 +205,16 @@ article ul {
   margin-bottom: var(--padding-sm);
 }
 
+/* Components */
+
+.pill {
+  display: inline-block;
+  background-color: var(--color-grey);
+  padding: 10px;
+  margin-bottom: 5px;
+  font-size: 14px;
+}
+
 /* Code / prism */
 
 pre>code {

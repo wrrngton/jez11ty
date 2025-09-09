@@ -2,6 +2,8 @@
 layout: layouts/card.njk
 ---
 
+{{ page | dump }}
+
 <article>
   {{ content | safe }}
 </article>
@@ -11,18 +13,32 @@ layout: layouts/card.njk
   <div>
 
     <h3>Published</h3>
-    <p>2010-06-06</p>
+    <p>{{ date | postDate }}</p>
 
   </div>
 
   <div>
     <h3>Updated</h3>
-    <p>2010-06-06</p>
+    <p>{{ modified | postDate }}</p>
   </div>
 
   <div>
     <h3>Category</h3>
-    <p class="capitalize">{{ category }}</p>
+    <div class="pill capitalize">
+
+      {{ category }}
+
+    </div>
+  </div>
+
+  <div>
+    <h3>Category</h3>
+
+    {% for tag in tags %}
+    <div class="pill capitalize">
+      {{ tag }}
+    </div>
+    {% endfor %}
   </div>
 
 </aside>
