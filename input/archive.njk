@@ -1,0 +1,25 @@
+---
+title: Archive
+description: post archive
+layout: layouts/card.njk
+---
+
+{% set currentYear = '' %}
+
+{% for post in collections.posts | reverse %}
+
+  {% set postYear = post.date | getDate("year") %}
+
+  {% if currentYear != postYear %}
+
+  <h2>{{ postYear }}</h2>
+
+  {% endif %}
+
+  <a href="{{ post.url }}" class="block mb-sm">{{ post.data.title }}</a>
+
+  {% set currentYear = postYear %}
+
+{% endfor %}
+
+

@@ -1,7 +1,28 @@
 ---
-layout: base.njk
+layout: layouts/card.njk
 ---
 
-<h1>{{ title }}</h1>
+<article>
+  {{ content | safe }}
+</article>
 
-{{ content | safe }}
+<aside class="card__aside">
+
+  <div>
+
+    <h3>Published</h3>
+    <p>2010-06-06</p>
+
+  </div>
+
+  <div>
+    <h3>Updated</h3>
+    <p>2010-06-06</p>
+  </div>
+
+  <div>
+    <h3>Category</h3>
+    <p class="capitalize">{{ category }}</p>
+  </div>
+
+</aside>

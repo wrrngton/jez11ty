@@ -3,6 +3,7 @@ title: "How to deploy a Flask project to your linux server with Nginx"
 layout: "pages/post.njk"
 tags: ["flask", "python", "linux"]
 category: python
+date: 2024-02-03
 ---
 
 > This guide is written solely for me, I know there are a lot of tutorials online to do this, but writing this helps solidify my understanding for this exact process. The original guide I used is [here](https://www.digitalocean.com/community/tutorials/how-to-serve-flask-applications-with-gunicorn-and-nginx-on-ubuntu-22-04) and is a very helpful resource

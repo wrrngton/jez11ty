@@ -1,6 +1,13 @@
 ---
 title: homepage
-layout: base.njk
+layout: layouts/card.njk
 ---
 
-hello world!
+<ul class="flex flex-col gap-sm mb-sm">
+  {% for post in collections.recentPosts %}
+    {% include "components/list-item.njk" %}
+  {% endfor %}
+</ul>
+
+<a href="/archive">See post archive</a>
+

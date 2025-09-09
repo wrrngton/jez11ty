@@ -1,7 +1,7 @@
 ---
-title: post tags
+title: Categories
 description: post tags
-layout: base.njk
+layout: layouts/card.njk 
 ---
 
 {% set catArr = [] %}
@@ -16,24 +16,28 @@ layout: base.njk
 
 {% endfor %}
 
-{{ catArr }}
+{% set catArr = catArr | alphSort %}
 
 {% for cat in catArr %}
 
-  <h2>{{ cat }}</h2>
+<div class="mb-md">
+
+  <h3 class="capitalize">{{ cat }}</h3>
 
   <ul class="flex">
 
-  {% for post in collections[cat] %}
+  {% for post in collections.posts %}
 
-  <li>
-    <a href="{{ post.url }}" />
-      {{ post.data.title }}
-    </a>
-  </li>
+  {% if post.data.category == cat %}
+
+    {% include "components/list-item.njk" %}
+
+  {% endif %}
 
   {% endfor %}
 
   </ul>
+
+</div>
 
 {% endfor %}

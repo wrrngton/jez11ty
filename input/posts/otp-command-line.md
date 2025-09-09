@@ -2,6 +2,7 @@
 title: "OTP from the command line (AKA ditch your smartphone)"
 tags: ["linux", "digital autonomy"]
 category: linux
+date: 2024-06-06
 ---
 
 I'm in the middle of an experiment to ditch my smartphone for a month.

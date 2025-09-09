@@ -1,0 +1,226 @@
+@font-face {
+  font-family: "Baskervville";
+  src: url("/static/fonts/Baskervville-Regular.ttf") format("truetype");
+  font-display: swap;
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "Baskervville";
+  src: url("/static/fonts/Baskervville-Bold.ttf") format("truetype");
+  font-display: swap;
+  font-weight: 600;
+}
+
+/* Root styles */
+:root {
+  --padding-xs: 10px;
+  --padding-sm: 20px;
+  --padding-md: 30px;
+  --color-grey: #dedede;
+  --color-light-grey: #f7f7f7;
+  --color-blue: #4183c4;
+  --color-dark-blue: #1e70bf;
+  --color-black: #000000;
+  --color-white: #ffffff;
+  --footer-height: 80px;
+}
+
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  font-family: "Baskervville", sans-serif;
+  background-color: #ececec;
+  position: relative;
+}
+
+main {
+  padding-top: var(--padding-md);
+  padding-bottom: var(--padding-md);
+}
+
+.app {
+  min-height: 100%;
+  margin-bottom: calc(var(--footer-height) * -1);
+}
+
+/* Utilities */
+
+.flex {
+  display: flex;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.flex-row {
+  flex-direction: row;
+}
+
+.block {
+  display: block;
+}
+
+.gap-sm {
+  gap: 10px;
+}
+
+.gap-md {
+  gap: 20px;
+}
+
+.mb-sm {
+  margin-bottom: var(--padding-sm);
+}
+
+.mb-md {
+  margin-bottom: var(--padding-md);
+}
+
+.p-0 {
+  padding: 0px;
+}
+
+.list-none {
+  list-style: none;
+}
+
+.capitalize {
+  text-transform: capitalize;
+}
+
+.decoration-none {
+  text-decoration: none;
+}
+
+/* Typography */
+
+a {
+  text-decoration: none;
+  color: var(--color-blue);
+}
+
+a:hover {
+  color: var(--color-dark-blue);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  margin-bottom: var(--padding-sm);
+}
+
+hr {
+  border-top: 1px solid var(--color-grey);
+  height: 1px;
+}
+
+/* The rest */
+
+.container {
+  max-width: 1350px;
+  margin: 0 auto;
+  padding-left: var(--padding-sm);
+  padding-right: var(--padding-sm);
+}
+
+.card {
+  background-color: white;
+  padding: var(--padding-md);
+  -webkit-box-shadow: 5px 8px 7px -1px rgba(0, 0, 0, 0.71);
+  box-shadow: 5px 8px 7px -1px rgba(0, 0, 0, 0.71);
+}
+
+.card__header {
+  margin-bottom: var(--padding-md);
+}
+
+.card__body {
+  display: flex;
+  gap: var(--padding-md);
+}
+
+.card__aside {
+  width: 33.33%;
+  padding-left: var(--padding-md);
+  padding-right: var(--padding-md);
+  border-left: 1px solid var(--color-grey);
+}
+
+.card__aside>div {
+  margin-bottom: var(--padding-md);
+}
+
+.card__aside h3 {
+  margin-bottom: var(--padding-xs);
+}
+
+ul {
+  padding-left: calc(var(--padding-sm) + 3px);
+}
+
+ul>li::marker {
+  font-size: 13px;
+}
+
+header {
+  background-color: #fff;
+}
+
+header li:hover {
+  background-color: var(--color-light-grey);
+}
+
+header a {
+  color: initial;
+  display: block;
+  height: 100%;
+  padding: var(--padding-sm);
+}
+
+header a:hover {
+  color: initial;
+}
+
+/* Articles */
+
+article {}
+
+article p,
+article ul {
+  margin-bottom: var(--padding-sm);
+}
+
+/* Code / prism */
+
+pre>code {
+  font-size: 14px;
+}
+
+/* Used for sticky footer */
+footer,
+.push {
+  height: var(--footer-height);
+}
+
+footer {
+  display: flex;
+  align-items: center;
+  background-color: var(--color-black);
+  color: var(--color-white);
+  width: 100%;
+}
