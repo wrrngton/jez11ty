@@ -2,6 +2,7 @@
 title: Convert JSONL to JSON using JQ
 description: Convert JSONL to JSON using JQ
 tags: ["jq", "commandline"]
+layout: "/pages/post.njk"
 ---
 
 ```console

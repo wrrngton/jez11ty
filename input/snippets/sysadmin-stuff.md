@@ -2,6 +2,7 @@
 title: Sysadmin stuff
 description: Sysadmin stuff 
 tags: ["linux", "sysamdin"]
+layout: "/pages/post.njk"
 ---
 
 ## Disk space

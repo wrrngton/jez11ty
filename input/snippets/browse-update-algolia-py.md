@@ -2,6 +2,7 @@
 title: Browse Algolia index and update objects (Python)
 description: Browse Algolia index and update objects (Python)
 tags: ["algolia", "python"]
+layout: "/pages/post.njk"
 ---
 
 Using the most recent version of Algolia's Python client library, this script will browse and index and do a batch operation on it, 1,000 objects at a time. 

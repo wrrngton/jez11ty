@@ -2,6 +2,7 @@
 title: Browse Algolia index and update objects (JS)
 description: Browse Algolia index and update objects (JS)
 tags: ["algolia"]
+layout: "/pages/post.njk"
 ---
 
 ```js

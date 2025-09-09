@@ -2,6 +2,7 @@
 title: UFW stuff 
 description: ufw stuff 
 tags: ["linux"]
+layout: "/pages/post.njk"
 ---
 
 **SSH**

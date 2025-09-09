@@ -2,6 +2,7 @@
 title: Managing symlinks 
 description: How to manage symlinks 
 tags: ["linux", "sysamdin"]
+layout: "/pages/post.njk"
 ---
 
 ## How to manage symlinks for nginx

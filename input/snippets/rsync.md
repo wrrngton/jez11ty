@@ -2,6 +2,7 @@
 title: Basic rsync commands
 description: Basic rsync commands
 tags: ["rsync"]
+layout: "/pages/post.njk"
 ---
 
 I use these rscync commands regularly to sync local data and remote servers:

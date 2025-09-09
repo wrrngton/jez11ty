@@ -2,7 +2,7 @@
 title: TaskWarrior commands 
 description: TaskWarrior commands I use daily 
 tags: ["taskwarrior", "cli"]
-draft: true
+layout: "/pages/post.njk"
 ---
 See tasks completed today.
 

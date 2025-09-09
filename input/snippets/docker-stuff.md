@@ -2,6 +2,7 @@
 title: Docker stuff
 description: Docker stuff 
 tags: ["docker"]
+layout: "/pages/post.njk"
 ---
 
 ## Basic commands

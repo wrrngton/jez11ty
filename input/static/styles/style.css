@@ -81,6 +81,10 @@ main {
   gap: 20px;
 }
 
+.mb-xs {
+  margin-bottom: var(--padding-xs);
+}
+
 .mb-sm {
   margin-bottom: var(--padding-sm);
 }
@@ -132,7 +136,7 @@ hr {
 /* The rest */
 
 .container {
-  max-width: 1350px;
+  max-width: 1000px;
   margin: 0 auto;
   padding-left: var(--padding-sm);
   padding-right: var(--padding-sm);
@@ -151,11 +155,16 @@ hr {
 
 .card__body {
   display: flex;
-  gap: var(--padding-md);
+  flex-direction: column;
+}
+
+.card__body--post {
+ display: grid;
+ gap: var(--padding-md);
+ grid-template-columns: 75% 25%;
 }
 
 .card__aside {
-  width: 33.33%;
   padding-left: var(--padding-md);
   padding-right: var(--padding-md);
   border-left: 1px solid var(--color-grey);

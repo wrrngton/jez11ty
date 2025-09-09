@@ -1,6 +1,7 @@
 ---
 title: "OTP from the command line (AKA ditch your smartphone)"
 tags: ["linux", "digital autonomy"]
+layout: "pages/post.njk"
 category: linux
 date: 2024-06-06
 ---

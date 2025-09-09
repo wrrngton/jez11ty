@@ -1,8 +1,7 @@
 ---
-layout: layouts/card.njk
+layout: layouts/card-post.njk
 ---
-
-{{ page | dump }}
+{% set contentType = (page.filePathStem | getContentType ) %}
 
 <article>
   {{ content | safe }}
@@ -22,6 +21,7 @@ layout: layouts/card.njk
     <p>{{ modified | postDate }}</p>
   </div>
 
+  {% if contentType == "posts" %}
   <div>
     <h3>Category</h3>
     <div class="pill capitalize">
@@ -31,8 +31,10 @@ layout: layouts/card.njk
     </div>
   </div>
 
+  {% endif %}
+
   <div>
-    <h3>Category</h3>
+    <h3>Tags</h3>
 
     {% for tag in tags %}
     <div class="pill capitalize">

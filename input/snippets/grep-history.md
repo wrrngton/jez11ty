@@ -2,6 +2,7 @@
 title: Grep your command history 
 description: How to grep your command historu 
 tags: ["grep", "commandline"]
+layout: "/pages/post.njk"
 ---
 
 You can grep your command history easily. This helps when trying to find your historical commands that match a pattern instead of just dumping the whole history.

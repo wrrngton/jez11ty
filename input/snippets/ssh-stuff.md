@@ -2,6 +2,7 @@
 title: SSH stuff
 description: SSH stuff 
 tags: ["linux", "sysamdin"]
+layout: "/pages/post.njk"
 ---
 
 ## Generate key, link with server

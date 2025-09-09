@@ -2,6 +2,7 @@
 title: Rclone 
 description: Rclone stuff 
 tags: ["linux", "rclone"]
+layout: "/pages/post.njk"
 ---
 
 [Useful docs](https://www-backblaze-com.webpkgcache.com/doc/-/s/www.backblaze.com/docs/cloud-storage-integrate-rclone-with-backblaze-b2)

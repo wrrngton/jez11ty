@@ -2,6 +2,7 @@
 title: Apply a tailwind class based on descendent state
 description: Apply a tailwind class based on descendent state
 tags: ["tailwind"]
+layout: "/pages/post.njk"
 ---
 
 You can apply css classes to parent elements if any of the parent's descendents meet a certain condition using the `has()` selector.

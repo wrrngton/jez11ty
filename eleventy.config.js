@@ -8,6 +8,11 @@ export default async function(eleventyConfig) {
     return util.inspect(obj);
   });
 
+  eleventyConfig.addFilter("getContentType", (filePathStem) => {
+    const contentType = filePathStem.split("/")[1];
+    return contentType;
+  });
+
   eleventyConfig.addPlugin(syntaxHighlight);
 
   eleventyConfig.addCollection("posts", function(collectionApi) {

@@ -2,6 +2,7 @@
 title: Batch compress image using ImageMagick!
 description: Batch compress image using ImageMagick
 tags: ["commandline"]
+layout: "/pages/post.njk"
 ---
 
 This command loops a directory (`cd` into it, i'm assuming you're in it) and for every `.jpg` it aims to compress it to 200kb (not guaranteed)
