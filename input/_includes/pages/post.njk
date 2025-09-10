@@ -2,6 +2,9 @@
 layout: layouts/card-post.njk
 ---
 {% set contentType = (page.filePathStem | getContentType ) %}
+{% set previousPost = collections.posts | getPreviousCollectionItem(page) %}
+{% set nextPost = collections.posts | getNextCollectionItem(page) %}
+
 
 <article>
   {{ content | safe }}
@@ -33,14 +36,32 @@ layout: layouts/card-post.njk
 
   {% endif %}
 
-  <div>
+  <div class="tags">
     <h3>Tags</h3>
 
     {% for tag in tags %}
     <div class="pill capitalize">
+      <a href="/tags/{{ tag }}">
       {{ tag }}
+      </a>
     </div>
     {% endfor %}
+  </div>
+
+  <div>
+    <h3>Links</h3>
+    <div class="pagination">
+    {% if previousPost %}
+        
+      <a href="{{ previousPost.url }}">Prev</a>
+        
+    {% endif %}
+    {% if nextPost %}
+        
+      <a href="{{ nextPost.url }}">Next</a>
+        
+    {% endif %}
+    </div>
   </div>
 
 </aside>

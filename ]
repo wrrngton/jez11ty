@@ -1,0 +1,23 @@
+---
+pagination: 
+  data: collections
+  size: 1
+  alias: tag
+permalink: /tags/{{ tag }}/
+layout: "layouts/card.njk"
+title: {{ tag.name }}
+---
+
+<ul class="flex">
+
+{% set taglist = collections[ tag ] %}
+
+  {% for post in taglist | reverse %}
+
+    {% include "components/list-item.njk"  %}
+
+{% endfor %}
+
+</ul>
+
+
