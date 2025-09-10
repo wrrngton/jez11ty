@@ -6,7 +6,6 @@ category: python
 date: "2024-02-03"
 modified: "2025-02-03"
 ---
-
 > This guide is written solely for me, I know there are a lot of tutorials online to do this, but writing this helps solidify my understanding for this exact process. The original guide I used is [here](https://www.digitalocean.com/community/tutorials/how-to-serve-flask-applications-with-gunicorn-and-nginx-on-ubuntu-22-04) and is a very helpful resource
 
 I went through the process of deploying a flask app to a VPS running an Nginx server recently and I wanted to document the process I took.
@@ -19,6 +18,8 @@ I went through the process of deploying a flask app to a VPS running an Nginx se
 - Run the application on the server on a localhost port using Gunicorn
 - Create a server process using `systemd` to keep the application running persistently
 - Spin up a subdomain using Nginx to server the application
+
+<!-- excerpt -->
 
 ## Building locally
 

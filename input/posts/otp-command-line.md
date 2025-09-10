@@ -12,6 +12,8 @@ Anyway, i've found new resolve and i'm just using my Nokia dumbphone now, but a 
 
 Enter `pass` and `pass otp`.
 
+<!-- excerpt -->
+
 ## Command line password managment & OTP
 
 Turns out you can access all your OTP codes from the command line pretty easily if you're using a unix system.

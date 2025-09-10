@@ -1,7 +1,7 @@
 ---
 title: post tags
 description: post tags
-layout: base.njk
+layout: layouts/card.njk
 ---
 
 {% set tagsArr = [] %}
@@ -21,10 +21,11 @@ layout: base.njk
 {% endfor %}
 
 {% for tag in tagsArr %}
+<div class="mb-sm">
 
   <h2>{{ tag }}</h2>
 
-  <ul class="flex">
+  <ul class="flex flex-col">
 
   {% for post in collections[tag] %}
 
@@ -33,5 +34,7 @@ layout: base.njk
   {% endfor %}
 
   </ul>
+
+</div>
 
 {% endfor %}

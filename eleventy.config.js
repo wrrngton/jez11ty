@@ -1,5 +1,7 @@
 import syntaxHighlight from "@11ty/eleventy-plugin-syntaxhighlight";
 import util from "util";
+import MarkdownIt from "markdown-it";
+const md = new MarkdownIt({ html: true });
 
 export default async function(eleventyConfig) {
   eleventyConfig.setInputDirectory("input");
@@ -8,12 +10,27 @@ export default async function(eleventyConfig) {
     return util.inspect(obj);
   });
 
+  eleventyConfig.setFrontMatterParsingOptions({
+		excerpt: true,
+		excerpt_separator: "<!-- excerpt -->",
+	});
+
+  eleventyConfig.addPreprocessor("drafts", "*", (data, content) => {
+    if (
+      (data.draft && process.env.ELEVENTY_RUN_MODE === "build") ||
+      (data.draft && process.env.ELEVENTY_RUN_MODE === "serve")
+    ) {
+      return false;
+    }
+  });
+
   eleventyConfig.addFilter("getContentType", (filePathStem) => {
     const contentType = filePathStem.split("/")[1];
     return contentType;
   });
 
   eleventyConfig.addPlugin(syntaxHighlight);
+  eleventyConfig.addFilter("md", (str) => (str ? md.render(str) : ""));
 
   eleventyConfig.addCollection("posts", function(collectionApi) {
     return collectionApi.getFilteredByGlob("input/posts/*.md");
@@ -22,6 +39,19 @@ export default async function(eleventyConfig) {
   eleventyConfig.addCollection("snippets", function(collectionApi) {
     return collectionApi.getFilteredByGlob("input/snippets/*.md");
   });
+
+  eleventyConfig.on("beforeBuild", (collectionApi) => {
+    console.log(collectionApi);
+    const posts = collectionApi.getAll();
+    console.log(posts);
+  });
+
+
+  // eleventyConfig.addCollection("categoryPosts", function(collectionApi) {
+  //   return collectionApi.getAll().filter(function (item) {
+  //       return "category" in item.data;
+  //   });
+  // });
 
   eleventyConfig.addCollection("recentPosts", function(collectionApi) {
     return collectionApi

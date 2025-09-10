@@ -3,11 +3,18 @@ title: homepage
 layout: layouts/card.njk
 ---
 
-<ul class="flex flex-col gap-sm mb-sm">
-  {% for post in collections.recentPosts %}
-    {% include "components/list-item.njk" %}
-  {% endfor %}
-</ul>
+{% for post in collections.recentPosts %}
 
-<a href="/archive">See post archive</a>
+  <article class="py-2">
+    <h2><a href="{{ post.url }}">{{ post.data.title }}</a></h2>
+    <time class="mb-sm inline-block">{{ post.date | postDate }}</time>
+    {{ post.page.excerpt | md | safe }}
+  </article>
+{% endfor %}
+
+<a href="/archive" class="btn btn--neutral">See post archive</a>
+
+
+
+{{ collections | dump }}
 

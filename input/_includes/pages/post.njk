@@ -2,8 +2,19 @@
 layout: layouts/card-post.njk
 ---
 {% set contentType = (page.filePathStem | getContentType ) %}
-{% set previousPost = collections.posts | getPreviousCollectionItem(page) %}
-{% set nextPost = collections.posts | getNextCollectionItem(page) %}
+{% if contentType == "posts" %}
+
+  {% set previousPost = collections.posts | getPreviousCollectionItem(page) %}
+  {% set nextPost = collections.posts | getNextCollectionItem(page) %}
+
+{% endif %}
+
+{% if contentType == "snippets" %}
+
+  {% set previousPost = collections.snippets | getPreviousCollectionItem(page) %}
+  {% set nextPost = collections.snippets | getNextCollectionItem(page) %}
+
+{% endif %}
 
 
 <article>

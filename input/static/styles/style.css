@@ -72,6 +72,10 @@ main {
 
 /* Utilities */
 
+.inline-block {
+  display: inline-block;
+}
+
 .flex {
   display: flex;
 }
@@ -112,6 +116,16 @@ main {
   padding: 0px;
 }
 
+.py-1 {
+  padding-top: var(--padding-xs);
+  padding-bottom: var(--padding-xs);
+}
+
+.py-2 {
+  padding-top: var(--padding-sm);
+  padding-bottom: var(--padding-sm);
+}
+
 .list-none {
   list-style: none;
 }
@@ -140,7 +154,7 @@ h2,
 h3,
 h4,
 h5 {
-  margin-bottom: var(--padding-sm);
+  margin-bottom: var(--padding-xs);
 }
 
 hr {
@@ -166,6 +180,7 @@ hr {
 
 .card__header {
   margin-bottom: var(--padding-md);
+  border-bottom: 1px solid var(--color-grey);
 }
 
 .card__body {
@@ -185,7 +200,7 @@ hr {
   border-left: 1px solid var(--color-grey);
 }
 
-.card__aside > div {
+.card__aside>div {
   margin-bottom: var(--padding-md);
 }
 
@@ -197,7 +212,7 @@ ul {
   padding-left: calc(var(--padding-sm) + 3px);
 }
 
-ul > li::marker {
+ul>li::marker {
   font-size: 13px;
 }
 
@@ -222,7 +237,8 @@ header a:hover {
 
 /* Articles */
 
-article {
+article:not(:last-of-type) {
+  border-bottom: 1px solid var(--color-grey);
 }
 
 article p,
@@ -233,7 +249,7 @@ article blockquote {
 }
 
 .tags a {
- color: initial; 
+  color: initial;
 }
 
 blockquote {
@@ -250,7 +266,7 @@ blockquote p {
   display: flex;
 }
 
-.pagination > a {
+.pagination>a {
   flex-grow: 1;
   border: 1px solid var(--color-grey);
   padding: 7px 25px;
@@ -259,12 +275,16 @@ blockquote p {
   text-align: center;
 }
 
-.pagination > a:hover {
+.pagination>a:hover {
   background-color: var(--color-light-grey);
 }
 
-.pagination > a:nth-child(2) {
+.pagination>a:nth-child(2) {
   border-left: none;
+}
+
+time {
+  color: rgba(0, 0, 0, 0.5);
 }
 
 /* Components */
@@ -277,10 +297,38 @@ blockquote p {
   font-size: 14px;
 }
 
+.btn {
+  border: 1px solid var(--color-grey);
+  text-align: center;
+  padding: 7px 25px;
+}
+
+.btn--neutral {
+  color: initial;
+}
+
+.btn--neutral:hover {
+  color: initial;
+}
+
+.btn:hover {
+  background-color: var(--color-light-grey);
+}
+
 /* Code / prism */
 
-pre > code {
+pre[class*="language-"]>code {
   font-size: 14px;
+  background-color: initial;
+  padding: initial;
+}
+
+code {
+  background-color: var(--color-black);
+  color: var(--color-white);
+  padding: 2px;
+  font-family: monospace;
+  border-radius: 3px;
 }
 
 /* Used for sticky footer */

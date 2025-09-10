@@ -2,6 +2,7 @@
 title: "The great degoogling"
 category: Digital independence
 layout: "pages/post.njk"
+draft: true
 ---
 
 Here's how I went about removing Google from my life:
