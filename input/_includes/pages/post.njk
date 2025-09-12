@@ -36,13 +36,11 @@ layout: layouts/card-post.njk
   </div>
 
   {% if contentType == "posts" %}
-  <div>
+  <div class="categories">
     <h3>Category</h3>
-    <div class="pill capitalize">
-
-      {{ category }}
-
-    </div>
+      <a href="/categories/{{ category }}" class="capitalize pill">
+        {{ category }}
+      </a>
   </div>
 
   {% endif %}
@@ -51,11 +49,9 @@ layout: layouts/card-post.njk
     <h3>Tags</h3>
 
     {% for tag in tags %}
-    <div class="pill capitalize">
-      <a href="/tags/{{ tag }}">
+      <a href="/tags/{{ tag }}" class="pill capitalize">
       {{ tag }}
       </a>
-    </div>
     {% endfor %}
   </div>
 

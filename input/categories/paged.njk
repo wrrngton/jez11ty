@@ -1,0 +1,25 @@
+---
+pagination:
+  data: collections.categoryPosts
+  size: 1
+  alias: cats
+permalink: /categories/{{ cats.category }}/
+layout: "layouts/card.njk"
+eleventyComputed:
+ title: "Category: {{ cats.category }}"  
+---
+
+<ul class="flex flex-col gap-xs">
+
+{% set catPostList =  cats.posts %}
+
+
+  {% for post in catPostList | reverse %}
+
+    {% include "components/list-item.njk"  %}
+
+
+
+{% endfor %}
+
+</ul>

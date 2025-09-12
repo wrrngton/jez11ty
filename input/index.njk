@@ -2,7 +2,6 @@
 title: homepage
 layout: layouts/card.njk
 ---
-
 {% for post in collections.recentPosts %}
 
   <article class="py-2">
@@ -13,8 +12,3 @@ layout: layouts/card.njk
 {% endfor %}
 
 <a href="/archive" class="btn btn--neutral">See post archive</a>
-
-
-
-{{ collections | dump }}
-

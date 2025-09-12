@@ -11,9 +11,9 @@ export default async function(eleventyConfig) {
   });
 
   eleventyConfig.setFrontMatterParsingOptions({
-		excerpt: true,
-		excerpt_separator: "<!-- excerpt -->",
-	});
+    excerpt: true,
+    excerpt_separator: "<!-- excerpt -->",
+  });
 
   eleventyConfig.addPreprocessor("drafts", "*", (data, content) => {
     if (
@@ -40,18 +40,27 @@ export default async function(eleventyConfig) {
     return collectionApi.getFilteredByGlob("input/snippets/*.md");
   });
 
-  eleventyConfig.on("beforeBuild", (collectionApi) => {
-    console.log(collectionApi);
-    const posts = collectionApi.getAll();
-    console.log(posts);
+  eleventyConfig.addCollection("categoryPosts", function(collectionApi) {
+    const allPosts = collectionApi.getAll();
+    const allCats = allPosts.flatMap((el) =>
+      el.data.category !== undefined ? [el.data.category] : [],
+    );
+
+    const postsWithCats = allCats.map((cat) => {
+      const posts = collectionApi.getAll().filter(function(item) {
+        if (item.data.category == cat) return item;
+      });
+
+      const obj = {
+        category: cat,
+        posts: posts
+      };
+
+      return obj;
+    });
+
+    return postsWithCats;
   });
-
-
-  // eleventyConfig.addCollection("categoryPosts", function(collectionApi) {
-  //   return collectionApi.getAll().filter(function (item) {
-  //       return "category" in item.data;
-  //   });
-  // });
 
   eleventyConfig.addCollection("recentPosts", function(collectionApi) {
     return collectionApi
