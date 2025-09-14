@@ -17,5 +17,9 @@
     <div class="push"></div>
     </div>
     {% include "components/footer.njk" %}
+
+    {% if page.fileSlug == "snippets" %}
+      <script src="/static/scripts/search.js"></script>
+    {% endif %}
   </body>
 </html>

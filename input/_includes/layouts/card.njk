@@ -6,6 +6,10 @@ layout: base.njk
 
   <div class="card__header">
     <h1 class="capitalize">{{ title }}</h1>
+    {% if page.fileSlug == "snippets" %}
+      <input type="text" placeholder="search..." id="search"/>
+
+    {% endif %}
   </div>
 
   <div class="card__body">

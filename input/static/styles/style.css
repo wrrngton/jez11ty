@@ -208,10 +208,10 @@ nav > ul {
 }
 
 @media screen and (max-width: 600px) {
-  nav > ul {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-  }
+  /* nav > ul { */
+  /*   display: grid; */
+  /*   grid-template-columns: repeat(3, 1fr); */
+  /* } */
 
   nav a {
     padding: var(--padding-xs);
@@ -231,6 +231,9 @@ nav > ul {
 }
 
 .card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: var(--padding-md);
   border-bottom: 1px solid var(--color-grey);
 }
@@ -374,12 +377,14 @@ pre[class*="language-"] > code {
   font-size: 14px;
   background-color: initial;
   padding: initial;
+  white-space: pre-wrap;
 }
 
 code {
   background-color: var(--color-black);
   color: var(--color-white);
-  padding: 2px;
+  padding: 1px;
+  font-size: 14px;
   font-family: monospace;
   border-radius: 3px;
 }

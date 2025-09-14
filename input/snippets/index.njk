@@ -4,7 +4,7 @@ description: my blog snippets
 layout: layouts/card.njk 
 ---
 
-<ul class="flex flex-col gap-sm">
+<ul class="flex flex-col gap-sm" id="snippets">
   {% for post in collections.snippets %}
     {% include "components/list-item.njk" %}
   {% endfor %}
