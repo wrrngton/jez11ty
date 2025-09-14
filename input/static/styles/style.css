@@ -51,7 +51,6 @@
 html,
 body {
   height: 100%;
-  /* font-size: 62.5%; */
 }
 
 body {
@@ -177,6 +176,13 @@ hr {
   padding-right: var(--padding-sm);
 }
 
+@media screen and (max-width: 900px) {
+  .container {
+    padding-left: var(--padding-xs);
+    padding-right: var(--padding-xs);
+  }
+}
+
 header {
   background-color: #fff;
 }
@@ -249,6 +255,11 @@ nav > ul {
   grid-template-columns: 75% 25%;
 }
 
+.card__body--post > article,
+.card__body--post > .card__aside {
+  min-width: 0;
+}
+
 .card__aside {
   padding-left: var(--padding-md);
   padding-right: var(--padding-md);
@@ -264,6 +275,10 @@ nav > ul {
 }
 
 @media screen and (max-width: 900px) {
+  .card {
+    padding: var(--padding-sm);
+  }
+
   .card__body--post {
     grid-template-columns: 1fr;
   }
@@ -370,18 +385,19 @@ time {
 /* Code / prism */
 
 pre {
-  white-space: pre-wrap;
+  white-space: pre-wrap!important;
 }
 
 pre[class*="language-"] > code {
   font-size: 14px;
   background-color: initial;
   padding: initial;
-  white-space: pre-wrap;
+  white-space: pre-wrap!important;
 }
 
 code {
   background-color: var(--color-black);
+  white-space: pre-wrap!important;
   color: var(--color-white);
   padding: 1px;
   font-size: 14px;
