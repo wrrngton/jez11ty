@@ -4,6 +4,7 @@ tags: ["linux", "digital autonomy"]
 layout: "pages/post.njk"
 category: linux
 date: 2024-06-06
+modified: 2024-06-06
 ---
 
 I'm in the middle of an experiment to ditch my smartphone for a month.

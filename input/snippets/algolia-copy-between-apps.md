@@ -3,6 +3,7 @@ title: Copy indices between Algolia apps w/ CLI
 description: Copy indices between Algolia apps w/ CLI
 tags: ["algolia"]
 layout: "/pages/post.njk"
+date: "2024-02-18"
 ---
 
 Ensure the [Algolia CLI](https://www.algolia.com/doc/tools/cli/get-started/overview/#install-the-algolia-cli) is installed

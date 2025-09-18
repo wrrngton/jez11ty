@@ -3,6 +3,8 @@ title: Batch compress image using ImageMagick!
 description: Batch compress image using ImageMagick
 tags: ["commandline"]
 layout: "/pages/post.njk"
+date: "2024-09-11"
+modified: "2024-09-11"
 ---
 
 This command loops a directory (`cd` into it, i'm assuming you're in it) and for every `.jpg` it aims to compress it to 200kb (not guaranteed)

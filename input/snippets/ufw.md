@@ -3,6 +3,8 @@ title: UFW stuff
 description: ufw stuff 
 tags: ["linux"]
 layout: "/pages/post.njk"
+date: "2024-02-18"
+modified: "2024-02-18"
 ---
 
 **SSH**

@@ -3,6 +3,8 @@ title: Managing symlinks
 description: How to manage symlinks 
 tags: ["linux", "sysamdin"]
 layout: "/pages/post.njk"
+date: "2025-04-06"
+modified: "2025-04-06"
 ---
 
 ## How to manage symlinks for nginx

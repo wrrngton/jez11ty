@@ -3,6 +3,8 @@ title: Update Algolia InstantSearch.js state
 description: How to update Algolia InstantSearch.js state
 tags: ["algolia"]
 layout: "/pages/post.njk"
+date: "2024-01-08"
+modified: "2024-01-08"
 ---
 
 Sometimes in InstantSearch, you want to update a widget's state based on a non-search action.

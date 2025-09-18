@@ -3,6 +3,8 @@ title: TaskWarrior commands
 description: TaskWarrior commands I use daily 
 tags: ["taskwarrior", "cli"]
 layout: "/pages/post.njk"
+date: "2024-02-18"
+modified: "2024-02-18"
 ---
 See tasks completed today.
 

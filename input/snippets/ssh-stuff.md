@@ -3,6 +3,8 @@ title: SSH stuff
 description: SSH stuff 
 tags: ["linux", "sysamdin"]
 layout: "/pages/post.njk"
+date: "2024-09-29"
+modified: "2024-09-29"
 ---
 
 ## Generate key, link with server

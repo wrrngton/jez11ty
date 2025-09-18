@@ -3,6 +3,8 @@ title: Docker stuff
 description: Docker stuff 
 tags: ["docker"]
 layout: "/pages/post.njk"
+date: "2024-05-14"
+modified: "2024-05-14"
 ---
 
 ## Basic commands

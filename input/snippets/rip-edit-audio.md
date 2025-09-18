@@ -3,6 +3,8 @@ title: Ripping and cutting music sets
 description: Ripping and cutting music sets
 tags: ["commandline"]
 layout: "/pages/post.njk"
+date: "2025-02-01"
+modified: "2025-02-01"
 ---
 
 Here's a simple process to rip audio, add metadata and cut the audio from the command line:

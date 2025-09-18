@@ -3,6 +3,8 @@ title: Sysadmin stuff
 description: Sysadmin stuff 
 tags: ["linux", "sysamdin"]
 layout: "/pages/post.njk"
+date: "2024-10-14"
+modified: "2024-10-14"
 ---
 
 ## Disk space

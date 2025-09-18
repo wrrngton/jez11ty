@@ -3,6 +3,8 @@ title: Track basic memory use in Pythons script
 description: How to track basic memory use in a Python script 
 tags: ["python"]
 layout: "/pages/post.njk"
+date: "2024-02-18"
+modified: "2024-02-18"
 ---
 [relevant docs](https://psutil.readthedocs.io/en/latest/#psutil.Process.memory_info)
 

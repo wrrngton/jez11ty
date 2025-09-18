@@ -3,6 +3,8 @@ title: Make a PUT request with @11ty/eleventy-fetch
 description: Make a PUT request with @11ty/eleventy-fetch
 tags: ["11ty"]
 layout: "pages/post.njk"
+date: "2025-07-20" 
+modified: "2025-07-20" 
 ---
 
 [11ty](https://www.11ty.dev/) fetch lets you cache resources for any remote asset at build time. It scored it in a cache in your project.

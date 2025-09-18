@@ -93,5 +93,13 @@ export default async function(eleventyConfig) {
     return suppliedArr.sort();
   });
 
+  eleventyConfig.addFilter("makeTitleCase", function(inputStr) {
+     const splitString = inputStr.split("");
+     const firstLetterUpper = splitString[0].toUpperCase();
+     splitString[0] = firstLetterUpper;
+     const finalString = splitString.join("");
+     return finalString;
+  });
+
   eleventyConfig.addPassthroughCopy("input/static");
 }

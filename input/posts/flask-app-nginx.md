@@ -1,5 +1,6 @@
 ---
 title: "How to deploy a Flask project to your linux server with Nginx"
+description: "Learn how to deploy a Flask app to your linux server"
 layout: "pages/post.njk"
 tags: ["flask", "python", "linux"]
 category: python
