@@ -9,6 +9,8 @@ modified: 2024-06-06
 
 I'm in the middle of an experiment to ditch my smartphone for a month.
 
+I've had a crummy little Nokia knocking around that I threw my sim into a few times in the last few years in an attempt to curb my smartphone addiction (the type we all have). I always enjoyed the few days of respite it gave me from the relentlesness of smartphone ownership, but I never stuck to it, lured back in my the conveniences of a handheld PC.
+
 Anyway, i've found new resolve and i'm just using my Nokia dumbphone now, but a problem occurred today at work - how do I manage all my OTP needs? Usually I get a text or open up the Google Authenticator app to get access to systems.
 
 Enter `pass` and `pass otp`.

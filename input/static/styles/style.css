@@ -56,8 +56,9 @@ body {
 body {
   font-family: "Libertine", sans-serif;
   line-height: 1.5;
-  background-color: #ececec;
   position: relative;
+  background-image: url("/static/images/square.png");
+  background-repeat: repeat;
 }
 
 main {
@@ -152,6 +153,10 @@ a {
 
 a:hover {
   color: var(--color-dark-blue);
+}
+
+p {
+  margin-bottom: 10px;
 }
 
 h1,
@@ -311,6 +316,10 @@ article blockquote {
   color: rgba(0, 0, 0, 0.87);
 }
 
+article p code {
+  font-size: 14px;
+}
+
 .tags a {
   color: initial;
 }
@@ -418,3 +427,5 @@ footer {
   color: var(--color-white);
   width: 100%;
 }
+
+/* About me page */
