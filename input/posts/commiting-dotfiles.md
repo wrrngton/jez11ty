@@ -47,6 +47,21 @@ ln -s ~/dotfiles/.tmux.conf ~/.tmux.conf
 ```
 If you `ls -a` in your home directory, you should see the symlink files there. These files can still be read by the programs you are using.
 
+You should end up with a directory structure like this:
+
+```text
+/home
+├── .vimrc
+├── .skhdrc
+├── .taskrc
+├── .tmux.conf
+└── dotfiles
+    ├── .vimrc
+    ├── .skhdrc
+    ├── .taskrc
+    └── .tmux.conf
+```
+
 ## Commit dotfiles to version control
 
 Now we can just commit the files in `/dotfiles` to version control like we would any other project.
