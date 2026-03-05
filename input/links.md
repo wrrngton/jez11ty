@@ -5,6 +5,7 @@ layout: base.njk
 ---
 # {{ title }}
 
+
 ## Programming
 
 *   [**Chess programming wiki** - a place to learn how to program computers to play chess.](https://www.chessprogramming.org/Main_Page)
@@ -14,5 +15,9 @@ layout: base.njk
 ## Bass music mixes
 
 *   [**Burial + Kode 9 mix** - BBC Mary Anne Hobbs](https://www.mixcloud.com/MaryAnneHobbs/burial-kode-9-mix-for-my-last-ever-bbc-radio1-transmission/)
+
+## Misc 
+
+*   [**Markdown guide** - markdown cheatsheet](https://www.markdownguide.org/cheat-sheet/)
 
 

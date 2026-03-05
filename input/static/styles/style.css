@@ -113,6 +113,10 @@ main {
   margin-bottom: var(--padding-md);
 }
 
+.txt-right {
+  text-align: right;
+}
+
 .p-0 {
   padding: 0px;
 }
