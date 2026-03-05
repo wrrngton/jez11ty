@@ -9,6 +9,7 @@ layout: base.njk
 
 *   [**Chess programming wiki** - a place to learn how to program computers to play chess.](https://www.chessprogramming.org/Main_Page)
 *   [**Miguel Grinberg** - Building web apps with Python and Flask, plus some IOT stuff](https://blog.miguelgrinberg.com/index)
+*   [**Offline mark** - mainly for life stuff, maybe someday if I look into OS stuff](https://offlinemark.com/)
 
 ## Bass music mixes
 

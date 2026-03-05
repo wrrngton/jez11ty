@@ -36,8 +36,8 @@ export default async function(eleventyConfig) {
     return collectionApi.getFilteredByGlob("input/posts/*.md");
   });
 
-  eleventyConfig.addCollection("snippets", function(collectionApi) {
-    return collectionApi.getFilteredByGlob("input/snippets/*.md");
+  eleventyConfig.addCollection("references", function(collectionApi) {
+    return collectionApi.getFilteredByGlob("input/references/*.md");
   });
 
   eleventyConfig.addCollection("categoryPosts", function(collectionApi) {

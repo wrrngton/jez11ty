@@ -9,10 +9,13 @@ const documents = Array.from(items).map((item) => {
   };
 });
 
-searchBox.addEventListener("input", (e) => {
-  q = e.target.value.toLowerCase();
+function runSearch(query) {
+  const searchQuery = query.toLowerCase();
+  const url = new URL(window.location);
+  url.searchParams.set('q', searchQuery)
+  window.history.replaceState({}, '', url);
 
-  const matchingItems = documents.filter((doc) => doc.title.includes(q));
+  const matchingItems = documents.filter((doc) => doc.title.includes(searchQuery));
 
   if (matchingItems.length === 0)
     return (results.innerHTML = "<span>No results, sorry!</span>");
@@ -24,6 +27,16 @@ searchBox.addEventListener("input", (e) => {
   results.innerHTML = "";
 
   results.insertAdjacentHTML("afterbegin", html);
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const urlOnLoad = new URL(window.location);
+  const queryOnLoad = urlOnLoad.searchParams.get('q');
+  runSearch(queryOnLoad);
+});
+
+searchBox.addEventListener("input", (e) => {
+  runSearch(e.target.value);
 });
 
 document.addEventListener("keypress", (e) => {

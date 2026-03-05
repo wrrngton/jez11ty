@@ -5,6 +5,7 @@ layout: "pages/post.njk"
 category: personal
 date: 2025-12-07
 modified: 2025-12-07
+draft: true
 ---
 
 I wish I had done a computer science degree. 
