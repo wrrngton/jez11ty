@@ -1,0 +1,17 @@
+---
+title: Links
+description: A collection of links I like
+layout: base.njk
+---
+# {{ title }}
+
+## Programming
+
+*   [**Chess programming wiki** - a place to learn how to program computers to play chess.](https://www.chessprogramming.org/Main_Page)
+*   [**Miguel Grinberg** - Building web apps with Python and Flask, plus some IOT stuff](https://blog.miguelgrinberg.com/index)
+
+## Bass music mixes
+
+*   [**Burial + Kode 9 mix** - BBC Mary Anne Hobbs](https://www.mixcloud.com/MaryAnneHobbs/burial-kode-9-mix-for-my-last-ever-bbc-radio1-transmission/)
+
+

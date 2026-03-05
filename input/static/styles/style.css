@@ -216,14 +216,10 @@ nav > ul {
   list-style: none;
   flex-wrap: wrap;
   align-items: center;
+  margin-bottom: 0px;
 }
 
 @media screen and (max-width: 600px) {
-  /* nav > ul { */
-  /*   display: grid; */
-  /*   grid-template-columns: repeat(3, 1fr); */
-  /* } */
-
   nav a {
     padding: var(--padding-xs);
   }
@@ -297,6 +293,7 @@ nav > ul {
 
 ul {
   padding-left: calc(var(--padding-sm) + 3px);
+  margin-bottom: var(--padding-md);
 }
 
 ul > li::marker {
