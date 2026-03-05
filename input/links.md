@@ -1,10 +1,8 @@
 ---
 title: Links
 description: A collection of links I like
-layout: base.njk
+layout: layouts/card.njk
 ---
-# {{ title }}
-
 
 ## Programming
 
