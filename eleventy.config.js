@@ -17,10 +17,13 @@ export default async function(eleventyConfig) {
 
   eleventyConfig.addPreprocessor("drafts", "*", (data, content) => {
     if (
-      (data.draft && process.env.ELEVENTY_RUN_MODE === "build") ||
-      (data.draft && process.env.ELEVENTY_RUN_MODE === "serve")
+      (data.draft && process.env.ELEVENTY_RUN_MODE === "build") 
     ) {
       return false;
+    }
+
+    if (data.draft && process.env.ELEVENTY_RUN_MODE === "serve") {
+      return content;
     }
   });
 
@@ -53,7 +56,7 @@ export default async function(eleventyConfig) {
 
       const obj = {
         category: cat,
-        posts: posts
+        posts: posts,
       };
 
       return obj;
@@ -94,11 +97,11 @@ export default async function(eleventyConfig) {
   });
 
   eleventyConfig.addFilter("makeTitleCase", function(inputStr) {
-     const splitString = inputStr.split("");
-     const firstLetterUpper = splitString[0].toUpperCase();
-     splitString[0] = firstLetterUpper;
-     const finalString = splitString.join("");
-     return finalString;
+    const splitString = inputStr.split("");
+    const firstLetterUpper = splitString[0].toUpperCase();
+    splitString[0] = firstLetterUpper;
+    const finalString = splitString.join("");
+    return finalString;
   });
 
   eleventyConfig.addPassthroughCopy("input/static");
