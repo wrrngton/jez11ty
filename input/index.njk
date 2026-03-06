@@ -8,6 +8,7 @@ layout: layouts/card-sidebar.njk
     <h2><a href="{{ post.url }}">{{ post.data.title }}</a></h2>
     <time class="mb-sm inline-block">{{ post.date | postDate }}</time>
     {{ post.page.excerpt | md | safe }}
+    <a href="{{ post.url }}">>><a/>
   </article>
 {% endfor %}
 
