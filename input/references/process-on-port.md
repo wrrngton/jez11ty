@@ -1,7 +1,7 @@
 ---
 title: Find and kill port processes
 description: Find and kill port processes 
-tags: ["bash"]
+tags: ["bash", "oneoffs"]
 layout: "/pages/post.njk"
 date: "2026-02-21"
 modified: "2026-02-21"

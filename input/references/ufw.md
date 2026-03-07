@@ -1,7 +1,7 @@
 ---
-title: UFW stuff 
-description: ufw stuff 
-tags: ["linux"]
+title: UFW 
+description: UFW stuff 
+tags: ["linux", "programs"]
 layout: "/pages/post.njk"
 date: "2024-02-18"
 modified: "2024-02-18"

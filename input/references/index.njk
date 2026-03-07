@@ -5,9 +5,25 @@ layout: layouts/card.njk
 ---
 
 <i>References for programs and software I often use</i><br/>
-
-<ul class="flex flex-col gap-sm" id="snippets">
+<div class="references" id="references">
+  <h2>Software / programs</h2>
+  <section id="section__programs">
+    <ul>
   {% for post in collections.references %}
+  {% if "programs" in post.data.tags %} 
     {% include "components/list-item.njk" %}
+  {% endif %} 
   {% endfor %}
-</ul>
+    </ul>
+  </section>
+  <h2>One off guides</h2>
+  <section id="section__oneoffs">
+    <ul>
+  {% for post in collections.references %}
+  {% if "oneoffs" in post.data.tags %} 
+    {% include "components/list-item.njk" %}
+  {% endif %} 
+  {% endfor %}
+    </ul>
+  </section>
+</references>

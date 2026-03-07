@@ -1,7 +1,7 @@
 ---
 title: Rclone 
 description: Rclone stuff 
-tags: ["linux", "rclone"]
+tags: ["linux", "rclone", "programs"]
 layout: "/pages/post.njk"
 date: "2024-05-02"
 modified: "2024-05-02"

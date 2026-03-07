@@ -11,8 +11,8 @@ layout: layouts/card-post.njk
 
 {% if contentType == "references" %}
 
-  {% set previousPost = references.snippets | getPreviousCollectionItem(page) %}
-  {% set nextPost = references.snippets | getNextCollectionItem(page) %}
+  {% set previousPost = collections.references | getPreviousCollectionItem(page) %}
+  {% set nextPost = collections.references | getNextCollectionItem(page) %}
 
 {% endif %}
 

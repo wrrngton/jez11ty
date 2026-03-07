@@ -6,7 +6,6 @@ tags: ["rant", "rss"]
 category: life
 date: "2026-03-06"
 modified: "2026-03-06"
-draft: true
 ---
 
 *TLDR: delete all apps and just use RSS*

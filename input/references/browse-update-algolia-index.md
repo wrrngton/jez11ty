@@ -1,10 +1,11 @@
 ---
 title: Browse Algolia index and update objects (JS)
 description: Browse Algolia index and update objects (JS)
-tags: ["algolia"]
+tags: ["algolia", "programs"]
 layout: "/pages/post.njk"
 date: "2023-12-26"
 modified: "2023-12-26"
+draft: true
 ---
 
 ```js

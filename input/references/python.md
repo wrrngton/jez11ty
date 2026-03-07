@@ -1,7 +1,7 @@
 ---
 title: Track basic memory use in Pythons script 
 description: How to track basic memory use in a Python script 
-tags: ["python"]
+tags: ["python", "languages"]
 layout: "/pages/post.njk"
 date: "2024-02-18"
 modified: "2024-02-18"

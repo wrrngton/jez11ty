@@ -1,7 +1,7 @@
 ---
-title: Docker stuff
+title: Docker
 description: Docker stuff 
-tags: ["docker"]
+tags: ["docker", "programs"]
 layout: "/pages/post.njk"
 date: "2024-05-14"
 modified: "2024-05-14"

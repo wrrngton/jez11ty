@@ -1,7 +1,7 @@
 ---
 title: Basic rsync commands
 description: Basic rsync commands
-tags: ["rsync"]
+tags: ["rsync", "programs"]
 layout: "/pages/post.njk"
 date: "2025-07-25"
 modified: "2025-07-25"

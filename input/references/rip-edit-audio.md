@@ -1,7 +1,7 @@
 ---
 title: Ripping and cutting music sets
 description: Ripping and cutting music sets
-tags: ["commandline"]
+tags: ["commandline", "oneoffs"]
 layout: "/pages/post.njk"
 date: "2025-02-01"
 modified: "2025-02-01"

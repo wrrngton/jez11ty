@@ -1,7 +1,7 @@
 ---
 title: Vim
 description: Vim motions, tips and tricks
-tags: ["linux"]
+tags: ["linux", "programs"]
 layout: "/pages/post.njk"
 date: "2026-03-07"
 modified: "2024-02-18"

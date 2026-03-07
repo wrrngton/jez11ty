@@ -1,7 +1,7 @@
 ---
 title: Managing symlinks 
 description: How to manage symlinks 
-tags: ["linux", "sysamdin"]
+tags: ["linux", "sysamdin", "programs"]
 layout: "/pages/post.njk"
 date: "2025-04-06"
 modified: "2025-04-06"

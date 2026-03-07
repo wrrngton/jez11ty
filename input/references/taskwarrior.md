@@ -1,7 +1,7 @@
 ---
-title: TaskWarrior commands 
-description: TaskWarrior commands I use daily 
-tags: ["taskwarrior", "cli"]
+title: TaskWarrior
+description: TaskWarrior commands, tips and tricks
+tags: ["taskwarrior", "cli", "programs"]
 layout: "/pages/post.njk"
 date: "2024-02-18"
 modified: "2024-02-18"

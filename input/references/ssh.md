@@ -1,7 +1,7 @@
 ---
-title: SSH stuff
+title: SSH
 description: SSH stuff 
-tags: ["linux", "sysamdin"]
+tags: ["linux", "sysamdin", "programs"]
 layout: "/pages/post.njk"
 date: "2024-09-29"
 modified: "2024-09-29"

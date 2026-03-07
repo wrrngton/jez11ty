@@ -408,6 +408,20 @@ time {
   color: rgba(0, 0, 0, 0.5);
 }
 
+/* References */
+.references ul {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.references section {
+ margin-bottom: var(--padding-md);
+}
+
+/* .references ul:not(:last-child) { */
+/*  margin-bottom: var(--padding-md); */
+/* } */
+
 /* Components */
 
 .pill {
