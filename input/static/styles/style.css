@@ -412,15 +412,18 @@ time {
 .references ul {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
+  column-gap: var(--padding-sm);
+}
+
+@media screen and (max-width: 576px) {
+  .references ul {
+    grid-template-columns: 1fr;
+  }
 }
 
 .references section {
  margin-bottom: var(--padding-md);
 }
-
-/* .references ul:not(:last-child) { */
-/*  margin-bottom: var(--padding-md); */
-/* } */
 
 /* Components */
 
