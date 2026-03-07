@@ -9,10 +9,10 @@ layout: layouts/card-post.njk
 
 {% endif %}
 
-{% if contentType == "snippets" %}
+{% if contentType == "references" %}
 
-  {% set previousPost = collections.snippets | getPreviousCollectionItem(page) %}
-  {% set nextPost = collections.snippets | getNextCollectionItem(page) %}
+  {% set previousPost = references.snippets | getPreviousCollectionItem(page) %}
+  {% set nextPost = references.snippets | getNextCollectionItem(page) %}
 
 {% endif %}
 
