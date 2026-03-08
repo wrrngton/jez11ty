@@ -33,8 +33,8 @@
   --padding-md: 30px;
   --color-grey: #dedede;
   --color-light-grey: #f7f7f7;
-  --color-blue: #4183c4;
-  --color-dark-blue: #1e70bf;
+  --color-highlight: #4b5b4b;
+  --color-dark-highlight: #a38a51;
   --color-black: #000000;
   --color-white: #ffffff;
   --footer-height: 80px;
@@ -152,11 +152,11 @@ main {
 
 a {
   text-decoration: none;
-  color: var(--color-blue);
+  color: var(--color-highlight);
 }
 
 a:hover {
-  color: var(--color-dark-blue);
+  color: var(--color-dark-highlight);
 }
 
 p {
@@ -280,6 +280,9 @@ nav>ul {
   .card__container {
     grid-template-columns: 1fr;
   }
+  .card__right {
+    padding-left: 0px;
+  }
 
   .card__left {
     margin-bottom: var(--padding-md);
@@ -376,7 +379,7 @@ article img {
 blockquote {
   background-color: var(--color-light-grey);
   padding: var(--padding-sm);
-  border-left: 3px solid var(--color-blue);
+  border-left: 3px solid var(--color-highlight);
 }
 
 blockquote p {
