@@ -197,7 +197,22 @@ blockquote {
 }
 
 header {
-  background-color: #fff;
+  background: url("/static/images/stratosphere-cover-test.jpg");
+  background-size: cover;
+  background-position: center center;
+  height: 100px;
+}
+
+header > .container {
+  height: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+
+nav {
+  background-color:  var(--color-white);
+  width: auto;
 }
 
 nav li:hover {
@@ -212,14 +227,14 @@ nav li {
 
 nav a {
   color: initial;
-  padding: var(--padding-xs) var(--padding-sm);
+  padding: 8px 10px;
 }
 
 nav a:hover {
   color: initial;
 }
 
-nav>ul {
+nav > ul {
   display: flex;
   list-style: none;
   flex-wrap: wrap;
@@ -265,7 +280,6 @@ nav>ul {
   grid-template-columns: 1fr 200px;
 }
 
-
 .card__left {
   padding-right: var(--padding-md);
 }
@@ -280,6 +294,7 @@ nav>ul {
   .card__container {
     grid-template-columns: 1fr;
   }
+
   .card__right {
     padding-left: 0px;
   }
@@ -301,8 +316,8 @@ nav>ul {
   grid-template-columns: 75% 25%;
 }
 
-.card__body--post>article,
-.card__body--post>.card__aside {
+.card__body--post > article,
+.card__body--post > .card__aside {
   min-width: 0;
 }
 
@@ -312,7 +327,7 @@ nav>ul {
   border-left: 1px solid var(--color-grey);
 }
 
-.card__aside>div {
+.card__aside > div {
   margin-bottom: var(--padding-md);
 }
 
@@ -341,7 +356,7 @@ ul {
   margin-bottom: var(--padding-md);
 }
 
-ul>li::marker {
+ul > li::marker {
   font-size: 13px;
 }
 
@@ -390,7 +405,7 @@ blockquote p {
   display: flex;
 }
 
-.pagination>a {
+.pagination > a {
   flex-grow: 1;
   border: 1px solid var(--color-grey);
   padding: 7px 25px;
@@ -399,11 +414,11 @@ blockquote p {
   text-align: center;
 }
 
-.pagination>a:hover {
+.pagination > a:hover {
   background-color: var(--color-light-grey);
 }
 
-.pagination>a:nth-child(2) {
+.pagination > a:nth-child(2) {
   border-left: none;
 }
 
@@ -425,7 +440,7 @@ time {
 }
 
 .references section {
- margin-bottom: var(--padding-md);
+  margin-bottom: var(--padding-md);
 }
 
 /* Components */
@@ -462,7 +477,7 @@ pre {
   white-space: pre-wrap !important;
 }
 
-pre[class*="language-"]>code {
+pre[class*="language-"] > code {
   font-size: 14px;
   background-color: initial;
   padding: initial;
