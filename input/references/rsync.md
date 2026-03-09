@@ -1,6 +1,6 @@
 ---
-title: Basic rsync commands
-description: Basic rsync commands
+title: Rsync
+description: Rsync tips and tricks
 tags: ["rsync", "programs"]
 layout: "/pages/post.njk"
 date: "2025-07-25"

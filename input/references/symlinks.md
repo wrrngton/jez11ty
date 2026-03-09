@@ -1,5 +1,5 @@
 ---
-title: Managing symlinks 
+title: Symlinks 
 description: How to manage symlinks 
 tags: ["linux", "sysamdin", "programs"]
 layout: "/pages/post.njk"

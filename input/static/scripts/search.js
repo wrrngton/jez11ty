@@ -40,7 +40,6 @@ function runSearch(query) {
   }
 
   const matchingSectionDocs = getSectionMatchingDocs(matchingItems);
-  console.log(matchingSectionDocs);
 
   for (const sectionDocs in matchingSectionDocs) {
     const sectionList = document.querySelector(`#section__${sectionDocs}`);
@@ -62,6 +61,7 @@ function runSearch(query) {
 document.addEventListener("DOMContentLoaded", () => {
   const urlOnLoad = new URL(window.location);
   const queryOnLoad = urlOnLoad.searchParams.get('q');
+  if(queryOnLoad == null) return;
   runSearch(queryOnLoad);
 });
 
