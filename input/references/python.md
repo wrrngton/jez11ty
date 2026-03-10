@@ -20,3 +20,12 @@ def log_memory():
 ```
 
 Just invoke `log_memory()` where you need. `rss` is the "non swapped physical memory a process has used".
+
+## Split array into n chunk size
+
+```python 
+chunk_size = 2
+arr = [1,2,3,4,5,6,7,8,9,10]
+chunks = [arr[i:i + chunk_size] for i in range(0, len(arr), chunk_size)]
+# [[1, 2], [3, 4], [5, 6], [7, 8], [9, 10]]
+```
