@@ -10,6 +10,7 @@ layout: layouts/card.njk
 *   [**Miguel Grinberg** - Building web apps with Python and Flask, plus some IOT stuff](https://blog.miguelgrinberg.com/index)
 *   [**Offline mark** - mainly for life stuff, maybe someday if I look into OS stuff](https://offlinemark.com/)
 *   [**Dev docs** - developer docs with offline support](https://devdocs.io/)
+*   [**Boot dev blog** - Beginner and advanced programming tips](https://blog.boot.dev/)
 
 ## Bass music mixes
 

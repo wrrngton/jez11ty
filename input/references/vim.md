@@ -11,7 +11,7 @@ modified: "2024-02-18"
 
 ## Deleting 
 
-### Delete until word
+### Delete until char
 
 This will delete up until the specified character forwards.
 
