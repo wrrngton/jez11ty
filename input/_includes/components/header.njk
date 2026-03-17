@@ -1,14 +1,15 @@
-{% set navData = [{url: "/", title: "home"}, {url: "/archive/", title: "archive"}, {url: "/projects/", title: "project"}, {url: "/about/", title: "about"}]%}
+{% set navData = [{url: "/", title: "home"}, {url: "/archive/", title: "archive"}, {url: "/projects/", title: "projects"}, {url: "/about/", title: "about"}]%}
 <header>
-
-{{ navData.x }}
 <div class="container">
-  <nav>
+<nav>
     <ul class="capitalize p-0">
       {% for el in navData %}
         <li {% if page.url == el.url %} class="active" {% endif %}><a href="{{ el.url }}">{{ el.title }}</a></li>
       {% endfor %}
     </ul>
   </nav>
+  <input type="text" name="query" placeholder="Search" class="search"></input>
+  <div class="hidden searchDropdown">
+  </div>
 </div>
 </header>

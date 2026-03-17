@@ -10,15 +10,25 @@ export default async function(eleventyConfig) {
     return util.inspect(obj);
   });
 
+  eleventyConfig.addFilter("toJson", (obj) => {
+    return JSON.stringify(obj);
+  });
+
+  eleventyConfig.addFilter("checkEmptyArray", (obj) => {
+    return typeof obj === "string" ? [] : obj;
+  });
+
+  eleventyConfig.addFilter("ifOccurs", (obj) => {
+    return obj !== undefined ? obj : "";
+  });
+
   eleventyConfig.setFrontMatterParsingOptions({
     excerpt: true,
     excerpt_separator: "<!-- excerpt -->",
   });
 
   eleventyConfig.addPreprocessor("drafts", "*", (data, content) => {
-    if (
-      (data.draft && process.env.ELEVENTY_RUN_MODE === "build") 
-    ) {
+    if (data.draft && process.env.ELEVENTY_RUN_MODE === "build") {
       return false;
     }
 
@@ -42,6 +52,32 @@ export default async function(eleventyConfig) {
   eleventyConfig.addCollection("references", function(collectionApi) {
     return collectionApi.getFilteredByGlob("input/references/*.md");
   });
+  eleventyConfig.addFilter("squash", (content) => {
+    if (!content) return "";
+    return content
+      .replace(/<[^>]+>/g, "") // Strip HTML tags
+      .replace(/\s+/g, " ") // Collapse whitespace
+      .trim();
+  });
+
+  // eleventyConfig.addCollection("searchHits", function(collectionApi) {
+  //   const allPosts = collectionApi.getAll();
+  //   const searchHits = allPosts.map((post) => {
+  //     if (!post.data.draft) {
+  //       const date = new Date(post.date);
+  //       return {
+  //         title: post.data.title,
+  //         date: post.content,
+  //         timestamp: Math.floor(date.getTime() / 1000),
+  //         urlPath: post.filePathStem,
+  //         content: post.templateContent,
+  //         ...(post.data.description && {description: post.data.description}),
+  //         ...(post.data.tags && {tags: post.data.tags})
+  //       };
+  //     }
+  //   }).filter(doc => doc !== undefined);
+  //   return searchHits;
+  // });
 
   eleventyConfig.addCollection("categoryPosts", function(collectionApi) {
     const allPosts = collectionApi.getAll();

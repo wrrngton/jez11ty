@@ -1,6 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+  <script id="search-data" type="application/json">
+  [
+    {% for post in collections.all %}
+      {% if not post.data.draft %}
+      {
+        "title": {{ post.data.title | ifOccurs | toJson  | safe }},
+        "date": {{ post.date.toLocaleDateString('en-GB') | ifOccurs | toJson  | safe }},
+        "timestamp": {{ post.date.getTime() / 1000 | ifOccurs | toJson | round }},
+        "urlPath": {{ post.url | ifOccurs | toJson |  safe }},
+        "description": {{ post.data.description | ifOccurs | toJson | safe }} ,
+        "tags": {{ post.data.tags | ifOccurs | checkEmptyArray | toJson  | safe }}
+      }{% if not loop.last %},{% endif %}
+      {% endif %}
+    {% endfor %}
+  ]
+  </script>
     <meta charset="utf-8" />
     <meta name="viewport"  content="width=device-width, initial-scale=1" />
     <title>{{ title | makeTitleCase }} {{ seo.separator }} {{ seo.title }}</title>
@@ -20,6 +36,8 @@
     <div class="push"></div>
     </div>
     {% include "components/footer.njk" %}
+     <script src="/static/scripts/mintie.js"></script>
+     <script src="/static/scripts/main.js"></script>
 
     {% if page.fileSlug == "references" %}
       <script src="/static/scripts/search.js"></script>
