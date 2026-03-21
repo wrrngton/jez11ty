@@ -28,9 +28,6 @@
 
 /* Root styles */
 :root {
-  --padding-xs: 10px;
-  --padding-sm: 20px;
-  --padding-md: 30px;
   --color-grey: #dedede;
   --color-light-grey: #f7f7f7;
   --color-highlight: #4b5b4b;
@@ -39,7 +36,11 @@
   --color-black: #000000;
   --color-white: #ffffff;
   --footer-height: 80px;
+  --default-font-size: 16px;
   --nav-height: 35px;
+  --padding-xs: 10px;
+  --padding-sm: 20px;
+  --padding-md: 30px;
 }
 
 *,
@@ -229,6 +230,8 @@ nav {
 }
 
 /* Search */
+
+/* Search header (on non /search pages) */
 .search {
   height: var(--nav-height);
   padding-left: 8px;
@@ -244,7 +247,6 @@ nav {
   font-size: 14px;
   right: var(--padding-sm);
   top: 100%;
-  padding: var(--padding-sm);
   background-color: var(--color-light-grey);
   width: 400px;
 }
@@ -259,7 +261,68 @@ nav {
 
 .searchDropdown em {
   background-color: var(--color-dark-highlight-opaque);
-  text-transform: none;
+  font-style: normal;
+}
+
+/* Search hits */
+
+.hits {
+  list-style: none;
+  padding-left: 0px;
+}
+
+.hits__link {
+  display: inline-block;
+  width: 100%;
+  padding: var(--padding-xs); 
+}
+
+.hits__title {
+  margin-bottom: 3px;
+  font-size: var(--default-font-size);
+  font-weight: normal;
+}
+
+.hits__path {
+  text-transform: uppercase;
+  font-size: 10px;
+  opacity: 0.4;
+}
+
+/* /search page */ 
+
+/* Search input on search page inherits styles from header search input */
+
+.search--searchPage {
+ margin-bottom: var(--padding-md); 
+}
+
+.searchResults {
+  list-style: none;
+  padding-left: 0px;
+}
+
+.searchPage__link {
+  display: inline-block;
+  width: 100%;
+  padding: var(--padding-xs); 
+}
+
+.searchPage__title {
+  margin-bottom: 3px;
+  font-size: 18px;
+  font-weight: normal;
+}
+
+.searchPage__path {
+  text-transform: uppercase;
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+.searchResults em {
+  background-color: var(--color-dark-highlight-opaque);
+  font-style: normal;
 }
 
 nav li:hover {

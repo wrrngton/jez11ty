@@ -1,76 +1,87 @@
-const searchBox = document.querySelector("#search");
-const items = document.querySelectorAll("#references li");
-const results = document.querySelector("#references");
-const sections = document.querySelectorAll("[id^='section__']");
+const searchData = document.getElementById("search-data").textContent;
+const jsonSearchData = JSON.parse(searchData);
+const searchBar = document.querySelector(".search");
+const searchResults = document.querySelector(".searchResults");
 
-const documents = Array.from(items).map((item) => {
+const docs = jsonSearchData.map((doc, index) => {
   return {
-    title: item.innerText.replaceAll("\n", "").trim().toLowerCase(),
-    innerHtml: item.innerHTML,
-    category: item.parentNode.parentNode.id.replace("section__", ""),
+    objectid: index.toString(),
+    ...doc,
   };
 });
 
-function getSectionMatchingDocs(matchingDocs) {
-  const newObj = {};
-  for (const section of sections) {
-    const sectionName = section.id.replace("section__", "");
-    const matchingSectionDocs = matchingDocs.filter(
-      (item) => sectionName == item.category,
-    );
-    newObj[sectionName] = matchingSectionDocs;
-  }
-  return newObj;
-}
+const config = {
+  searchableAttributes: ["title", "description", "content"],
+  stopWords: ["a", "and", "of", "for"],
+  minCharsFor1Typo: 4,
+  minCharsFor2Typos: 6,
+  attributesToRetrieve: ["title", "description", "urlPath"],
+  customRanking: [{ attribute: "timestamp", direction: 1 }],
+};
 
-function runSearch(query) {
-  const searchQuery = query.toLowerCase();
+const searchClient = new MinTie.SearchClient(config, docs);
+
+function syncUrl(query) {
+  if (query.length === 0) {
+    const url = new URL(window.location);
+    url.searchParams.delete("q");
+    return window.history.replaceState({}, "", url);
+  }
+
   const url = new URL(window.location);
-  url.searchParams.set("q", searchQuery);
+  url.searchParams.set("q", query);
   window.history.replaceState({}, "", url);
-
-  const matchingItems = documents.filter((doc) =>
-    doc.title.includes(searchQuery),
-  );
-
-  if (matchingItems.length === 0) {
-    sections.forEach((section) => {
-      section.innerHTML = "<span>No results, sorry!</span>";
-    });
-  }
-
-  const matchingSectionDocs = getSectionMatchingDocs(matchingItems);
-
-  for (const sectionDocs in matchingSectionDocs) {
-    const sectionList = document.querySelector(`#section__${sectionDocs}`);
-
-    if (matchingSectionDocs[sectionDocs].length === 0) {
-      return sectionList.innerHTML = "<span>No results, sorry!</span>";
-    }
-
-    sectionList.innerHTML = "";
-    let html = "<ul>";
-    const insideHtml = matchingSectionDocs[sectionDocs]
-      .map((match) => `<li>${match.innerHtml}</li>`)
-      .join("");
-    html += `${insideHtml} </ul>`
-    sectionList.insertAdjacentHTML("afterbegin", html);
-  }
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  const urlOnLoad = new URL(window.location);
-  const queryOnLoad = urlOnLoad.searchParams.get('q');
-  if(queryOnLoad == null) return;
-  runSearch(queryOnLoad);
-});
+function runSearch(query = "") {
+  query = searchBar.value || query;
+  searchResults.innerHTML = "";
+  syncUrl(query);
 
-searchBox.addEventListener("input", (e) => {
-  runSearch(e.target.value);
-});
+  const results = searchClient.apiSearch(query, { docsPerPage: 2 });
+  const hits = results.hits;
 
-document.addEventListener("keypress", (e) => {
+  if (hits.length === 0) {
+    return (searchResults.innerHTML = "No results");
+  }
+  let html = ``;
+
+  const hitsHtml = hits
+    .map((hit) => {
+      const category = hit.urlPath.split("/")[1];
+      return `
+    <li class="searchPage__hit">    
+      <a href="${hit.urlPath}" class="searchPage__link">
+         <h2 class="searchPage__title">${hit.highlights.title ? hit.highlights.title : hit.title}</h2>
+         <div class="searchPage__path">${category}</div>
+      </a>
+    </li>
+    `;
+    })
+    .join("");
+
+  html += `${hitsHtml}`;
+
+  searchResults.insertAdjacentHTML("afterbegin", html);
+}
+
+searchBar.addEventListener("input", () => runSearch());
+
+document.addEventListener("keydown", (e) => {
   if (e.key === "k" && e.ctrlKey) {
-    searchBox.focus();
+    searchBar.focus();
+  }
+
+  if (e.key === "Escape") {
+    searchBar.blur();
+  }
+});
+
+window.addEventListener("DOMContentLoaded", (e) => {
+  const url = new URL(window.location.href);
+  const searchQuery = url.searchParams.get("q");
+
+  if (searchQuery && searchQuery.length > 0) {
+    runSearch(searchQuery);
   }
 });

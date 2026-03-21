@@ -21,27 +21,44 @@ const config = {
 
 const searchClient = new MinTie.SearchClient(config, docs);
 
-searchBar.addEventListener("input", (e) => {
-  const query = e.target.value;
-  searchBarDropdown.innerHTML = "";
+function syncUrl(query) {
+  if (query.length === 0) {
+    const url = new URL(window.location);
+    url.searchParams.delete("q");
+    return window.history.replaceState({}, "", url);
+  }
 
-  if(query.length === 0) return searchBarDropdown.classList.replace("block", "hidden");
+  const url = new URL(window.location);
+  url.searchParams.set("q", query);
+  window.history.replaceState({}, "", url);
+}
+
+function runSearch() {
+  const query = searchBar.value;
+  searchBarDropdown.innerHTML = "";
+  syncUrl(query);
+
+  if (query.length === 0)
+    return searchBarDropdown.classList.replace("block", "hidden");
 
   searchBarDropdown.classList.replace("hidden", "block");
-  const results = searchClient.apiSearch(e.target.value);
+  const results = searchClient.apiSearch(query, { docsPerPage: 2 });
   const hits = results.hits;
 
   if (hits.length === 0) {
     return (searchBarDropdown.innerHTML = "No results");
   }
-
-  let html = `<ul>`;
+  let html = `<ul class="hits">`;
 
   const hitsHtml = hits
     .map((hit) => {
+      const category = hit.urlPath.split("/")[1];
       return `
-    <li>    
-      <a href="${hit.urlPath}">${hit.highlights.title ? hit.highlights.title : hit.title}</a>
+    <li class="hits__hit">    
+      <a href="${hit.urlPath}" class="hits__link">
+         <h2 class="hits__title">${hit.highlights.title ? hit.highlights.title : hit.title}</h2>
+         <div class="hits__path">${category}</div>
+      </a>
     </li>
     `;
     })
@@ -50,10 +67,23 @@ searchBar.addEventListener("input", (e) => {
   html += `${hitsHtml + "</ul>"}`;
 
   searchBarDropdown.insertAdjacentHTML("afterbegin", html);
-});
+}
+
+searchBar.addEventListener("input", () => runSearch());
 
 document.addEventListener("click", (e) => {
   if (!searchBarDropdown.contains(e.target) && !searchBar.contains(e.target)) {
+    searchBarDropdown.classList.replace("block", "hidden");
+  }
+});
+
+document.addEventListener("keydown", (e) => {
+  if (e.key === "k" && e.ctrlKey) {
+    searchBar.focus();
+  }
+
+  if (e.key === "Escape") {
+    searchBar.blur();
     searchBarDropdown.classList.replace("block", "hidden");
   }
 });

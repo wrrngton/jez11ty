@@ -8,8 +8,10 @@
       {% endfor %}
     </ul>
   </nav>
-  <input type="text" name="query" placeholder="Search" class="search"></input>
+  {% if page.fileSlug !== "search" %}
+  <input type="text" name="query" placeholder="Search" class="search" autocomplete="off"></input>
   <div class="hidden searchDropdown">
   </div>
+  {% endif %}
 </div>
 </header>
