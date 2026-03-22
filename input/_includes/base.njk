@@ -37,12 +37,12 @@
     </div>
     {% include "components/footer.njk" %}
 
-    {% if page.fileSlug !== "search" %}
-       <script src="/static/scripts/mintie.js"></script>
-       <script src="/static/scripts/main.js"></script>
+    {% if page.fileSlug == "search" %}
+       <script src="/static/scripts/mintie.js" defer></script>
+       <script src="/static/scripts/search.js" defer></script>
      {% else %} 
-       <script src="/static/scripts/mintie.js"></script>
-       <script src="/static/scripts/search.js"></script>
+       <script src="/static/scripts/mintie.js" defer></script>
+       <script src="/static/scripts/main.js" defer></script>
      {% endif %}
 
   </body>

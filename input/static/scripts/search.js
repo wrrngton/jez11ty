@@ -33,12 +33,22 @@ function syncUrl(query) {
   window.history.replaceState({}, "", url);
 }
 
-function runSearch(query = "") {
-  query = searchBar.value || query;
-  searchResults.innerHTML = "";
-  syncUrl(query);
+function breadcrumbCreator(urlPath) {
+  const splitPath = urlPath.split("/");
+  splitPath.unshift("home");
+  const breadcrumbs = splitPath.filter((el) => el !== "").join(" > ");
+  return breadcrumbs;
+}
 
-  const results = searchClient.apiSearch(query, { docsPerPage: 2 });
+function runSearch(query = "") {
+  query =
+    searchBar.value === "" ? "*" : searchBar.value ? searchBar.value : query;
+
+  searchResults.innerHTML = "";
+
+  if (query !== "*") syncUrl(query);
+
+  const results = searchClient.apiSearch(query, { docsPerPage: 100 });
   const hits = results.hits;
 
   if (hits.length === 0) {
@@ -48,12 +58,12 @@ function runSearch(query = "") {
 
   const hitsHtml = hits
     .map((hit) => {
-      const category = hit.urlPath.split("/")[1];
+      const breadcrumbs = breadcrumbCreator(hit.urlPath);
       return `
     <li class="searchPage__hit">    
       <a href="${hit.urlPath}" class="searchPage__link">
          <h2 class="searchPage__title">${hit.highlights.title ? hit.highlights.title : hit.title}</h2>
-         <div class="searchPage__path">${category}</div>
+         <div class="searchPage__path">${breadcrumbs}</div>
       </a>
     </li>
     `;
@@ -80,6 +90,8 @@ document.addEventListener("keydown", (e) => {
 window.addEventListener("DOMContentLoaded", (e) => {
   const url = new URL(window.location.href);
   const searchQuery = url.searchParams.get("q");
+
+  if (!searchQuery) return runSearch("*");
 
   if (searchQuery && searchQuery.length > 0) {
     runSearch(searchQuery);
