@@ -517,6 +517,56 @@ article img {
   height: auto;
 }
 
+article hr {
+  margin-top: var(--padding-xs);
+  margin-bottom: var(--padding-xs);
+}
+
+table {
+  table-layout: fixed;
+  margin: 10px auto;
+  border-collapse: collapse;
+}
+
+tbody tr:nth-child(odd) {
+  background-color: #eeeeee;
+}
+
+th,
+td {
+  padding: var(--padding-xs);
+}
+
+tr :nth-child(2),
+tr :nth-child(3) {
+  text-align: right;
+  width: 15%;
+}
+
+tr :nth-child(1),
+tr :nth-child(4) {
+  text-align: left;
+  width: 35%;
+}
+
+tfoot tr :nth-child(1) {
+  text-align: right;
+}
+
+tfoot tr :nth-child(2) {
+  text-align: left;
+}
+
+th,
+td {
+  vertical-align: top;
+  padding: 0.3em;
+}
+
+tfoot {
+  border-top: 1px solid #999999;
+}
+
 .tags a {
   color: initial;
 }
