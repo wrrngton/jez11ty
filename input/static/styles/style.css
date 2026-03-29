@@ -508,8 +508,16 @@ article blockquote {
   color: rgba(0, 0, 0, 0.87);
 }
 
+article a {
+  text-decoration: underline;
+}
+
 article p code {
-  font-size: 14px;
+  font-size: 13px;
+  background-color: #ececec;
+  color: black;
+  line-height: 1;
+  border-radius: .25rem;
 }
 
 article img {
