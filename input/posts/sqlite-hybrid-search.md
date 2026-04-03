@@ -20,6 +20,8 @@ I'm going to walk you through building one such engine. We'll be using some food
 
 ## Get started
 
+*Find the repo that accompanies this tutorial [here](https://github.com/wrrngton/sqlhybridsearch)*
+
 I'm going to be working off a dataset you can download here: [recipes](/static/files/recipes.json) and add it to the root of your project now. Only the relevant fields we will use for this project have been included. Everything else is stripped away.
 
 First let's create the scaffold for our project, we're going to be using Python as the engine language. `mkdir <your-project-directory>`, `cd` into it then create and source a virtual python environment.
@@ -43,10 +45,6 @@ source venv/bin/activate
 ```
 
 You can of course skip all this and instead use [uv](https://docs.astral.sh/uv/) or something similar.
-
-### Create minimal app
-
-Right now, we're going to cram everything into a `main.py` file to make this as easy as possible for us. In the future we'll wire up a Flask app for API requests, but for now just create a `main.py` file and leave it empty.
 
 ### Creating databases
 

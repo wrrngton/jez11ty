@@ -1,6 +1,6 @@
 ---
-title: Batch rename files using file index
-description: Batch rename files using file index
+title: batch rename files using file index
+description: batch rename files using file index
 tags: ["commandline", "oneoffs"]
 layout: "/pages/post.njk"
 date: "2025-01-07"
