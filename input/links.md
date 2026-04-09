@@ -12,6 +12,10 @@ layout: layouts/card.njk
 *   [**Dev docs** - developer docs with offline support](https://devdocs.io/)
 *   [**Boot dev blog** - Beginner and advanced programming tips](https://blog.boot.dev/)
 
+## Lifestyle 
+
+- [**The Speak,Machine guy** - I like his takes](https://www.bcionescu.com/) 
+
 ## Bass music mixes
 
 *   [**Burial + Kode 9 mix** - BBC Mary Anne Hobbs](https://www.mixcloud.com/MaryAnneHobbs/burial-kode-9-mix-for-my-last-ever-bbc-radio1-transmission/)
